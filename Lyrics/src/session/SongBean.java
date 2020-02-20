@@ -25,7 +25,6 @@ public class SongBean {
 		List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.musicBy", Song.class).getResultList();
 		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy", Song.class).getResultList();
 		return result;
-		//return (List<Song>) em.createQuery("select s from Song s").getResultList();
 	}
 
 	public Song getById(int id) {

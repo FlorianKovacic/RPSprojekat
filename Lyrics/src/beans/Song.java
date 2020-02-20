@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,13 +26,13 @@ public class Song implements Serializable {
 	private Integer id;
 	private String title;
 	private String lyrics;
-	@ManyToOne//(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Performer performer;
-	@ManyToOne//(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Album album;
-	@ManyToMany/*(fetch = FetchType.EAGER)*/
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Author> musicBy = new ArrayList<>();
-	@ManyToMany/*(fetch = FetchType.EAGER)*/
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Author> lyricsBy = new ArrayList<>();
 
 	public Song(String title) {
