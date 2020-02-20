@@ -97,10 +97,10 @@ public class Song implements Serializable {
 	public void copyValues(Song other) {
 		title = other.title;
 		lyrics = other.lyrics;
-		performer = other.performer;
+		/*performer = other.performer;
 		album = other.album;
 		musicBy = other.musicBy;
-		lyricsBy = other.lyricsBy;
+		lyricsBy = other.lyricsBy;*/
 	}
 
 }

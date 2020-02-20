@@ -39,6 +39,7 @@ public class SongBean {
 		int albumId = s.getAlbum().getId();
 		Album realAlbum = ab.getById(albumId);
 		s.setAlbum(realAlbum);
+		realAlbum.getSongs().add(s);
 		em.persist(s);
 	}
 
