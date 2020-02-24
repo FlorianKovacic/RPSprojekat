@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -31,9 +32,11 @@ public class Song implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Album album;
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Author> musicBy = new ArrayList<>();
+	private List<Author> musicBy = new ArrayList<Author>();
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Author> lyricsBy = new ArrayList<>();
+	private List<Author> lyricsBy = new ArrayList<Author>();
+	@OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
+	private List<Comment> comments = new ArrayList<Comment>();
 
 	public Song(String title) {
 		this.title = title;

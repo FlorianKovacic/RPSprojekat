@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<songElement v-for="song in songs" v-bind:key="song.id" v-bind:song="song"></songElement>
-		<!-- <songSearch></songSearch> -->
+		<songSearch></songSearch>
 		<albumElement v-for="album in albums" v-bind:key="album.id" v-bind:album="album"></albumElement>
 	</div>
 </template>
@@ -10,7 +10,7 @@
 
 import songElement from './SongPage.vue'
 import albumElement from './Album.vue'
-// import songSearch from './SongSearch.vue'
+import songSearch from './SongSearch.vue'
 
 export default {
 	name: 'Main',
@@ -23,7 +23,7 @@ export default {
 	components: {
 		songElement,
 		albumElement,
-		// songSearch
+		songSearch
 	},
 	methods: {
 		getSongs: function() {

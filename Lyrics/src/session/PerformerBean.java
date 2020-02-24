@@ -14,9 +14,8 @@ public class PerformerBean {
 	@PersistenceContext(name = "lyrics")
 	EntityManager em;
 
-	@SuppressWarnings("unchecked")
 	public List<Performer> getAll() {
-		return (List<Performer>) em.createQuery("select s from Performer s").getResultList();
+		return (List<Performer>) em.createQuery("select p from Performer p", Performer.class).getResultList();
 	}
 
 	public Performer getById(int id) {

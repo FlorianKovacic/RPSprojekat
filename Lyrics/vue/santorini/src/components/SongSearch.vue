@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<p>
-			<input v-model="title"/>
+			<input v-model="title" placeholder="title"/>
 		</p>
 		<p>
-			<input v-model="lyrics"/>
+			<input v-model="lyrics" placeholder="lyrics"/>
 		</p>
 		<p>
 			<button v-on:click="search">Search for the song</button>

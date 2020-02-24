@@ -14,9 +14,8 @@ public class AuthorBean {
 	@PersistenceContext(name = "lyrics")
 	EntityManager em;
 
-	@SuppressWarnings("unchecked")
 	public List<Author> getAll() {
-		return (List<Author>) em.createQuery("select s from Author s").getResultList();
+		return (List<Author>) em.createQuery("select a from Author a", Author.class).getResultList();
 	}
 
 	public Author getById(int id) {
