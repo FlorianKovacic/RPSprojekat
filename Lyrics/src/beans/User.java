@@ -22,7 +22,7 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private String emailAdress;
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public String getUsername() {

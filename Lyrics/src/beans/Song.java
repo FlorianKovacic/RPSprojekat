@@ -27,15 +27,15 @@ public class Song implements Serializable {
 	private Integer id;
 	private String title;
 	private String lyrics;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Performer performer;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Album album;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Author> musicBy = new ArrayList<Author>();
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Author> lyricsBy = new ArrayList<Author>();
-	@OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
 	private List<Comment> comments = new ArrayList<Comment>();
 
 	public Song(String title) {

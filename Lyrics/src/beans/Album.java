@@ -25,7 +25,7 @@ public class Album implements Serializable {
 	private Integer id;
 	private String title;
 	private Integer year;
-	@OneToMany(mappedBy="album", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="album", fetch = FetchType.LAZY)
 	List<Song> songs = new ArrayList<>();
 
 	public Album() {

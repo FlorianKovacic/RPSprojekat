@@ -21,17 +21,17 @@ public class SongBean {
 	EntityManager em;
 
 	public List<Song> getAll() {
-		/*List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.musicBy", Song.class).getResultList();
-		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy", Song.class).getResultList();*/
-		List<Song> result = em.createQuery("select s from Song s", Song.class).getResultList();
+		List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.musicBy", Song.class).getResultList();
+		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy", Song.class).getResultList();
+		result = em.createQuery("select distinct s from Song s left join fetch s.comments", Song.class).getResultList();
 		return result;
 	}
 
 	public Song getById(int id) {
-		/*List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getResultList();
-		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy where s.id = :id", Song.class).setParameter("id", id).getResultList();
-		return result.get(0);*/
-		return em.find(Song.class, id);
+		Song result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		result = em.createQuery("select distinct s from Song s left join fetch s.comments where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		return result;
 	}
 
 	public void save(Song s) {

@@ -1,0 +1,8 @@
+<jboss-deployment-structure>
+  <deployment>
+    <!-- These add additional classes to the module. In this case it is the same as including the jar in the EAR's lib directory -->
+    <resources>
+      <resource-root path="jackson-datatype-hibernate5-2.10.2.jar" />
+    </resources>
+  </deployment>
+</jboss-deployment-structure>

@@ -14,13 +14,12 @@ public class AlbumBean {
 	@PersistenceContext(name = "lyrics")
 	EntityManager em;
 
-	@SuppressWarnings("unchecked")
 	public List<Album> getAll() {
-		return (List<Album>) em.createQuery("select a from Album a").getResultList();
+		return (List<Album>) em.createQuery("select a from Album a left join fetch a.songs", Album.class).getResultList();
 	}
 
 	public Album getById(int id) {
-		return em.find(Album.class, id);
+		return em.createQuery("select a from Album a left join fetch a.songs where a.id = :id", Album.class).setParameter("id", id).getSingleResult();
 	}
 
 	public void save(Album a) {

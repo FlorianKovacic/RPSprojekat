@@ -20,9 +20,9 @@ public class Comment implements Serializable{
 	private Integer id;
 	private Date date;
 	private String text;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Song song;
 
 	public Date getDate() {
