@@ -26,15 +26,25 @@ public class AlbumBean {
 		em.persist(a);
 	}
 
-	public void update(Album a) {
+	public boolean update(Album a) {
 		Album og = em.find(Album.class, a.getId());
-		og.copyValues(a);
-		em.merge(og);
+		if(og != null) {
+			og.copyValues(a);
+			em.merge(og);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Album a = em.find(Album.class, id);
-		em.remove(a);
+		if(a != null) {
+			em.remove(a);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

@@ -26,15 +26,25 @@ public class PerformerBean {
 		em.persist(p);
 	}
 
-	public void update(Performer p) {
+	public boolean update(Performer p) {
 		Performer og = em.find(Performer.class, p.getId());
-		og.copyValues(p);
-		em.merge(og);
+		if(og != null) {
+			og.copyValues(p);
+			em.merge(og);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Performer p = em.find(Performer.class, id);
-		em.remove(p);
+		if(p != null) {
+			em.remove(p);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

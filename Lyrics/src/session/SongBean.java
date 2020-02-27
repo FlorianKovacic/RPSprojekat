@@ -42,15 +42,25 @@ public class SongBean {
 		em.persist(s);
 	}
 
-	public void update(Song s) {
+	public boolean update(Song s) {
 		Song og = em.find(Song.class, s.getId());
-		og.copyValues(s);
-		em.merge(og);
+		if(og != null) {
+			og.copyValues(s);
+			em.merge(og);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Song s = em.find(Song.class, id);
-		em.remove(s);
+		if(s != null) {
+			em.remove(s);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private List<Song> createQueryAndGetResultList(String centre, SearchCriteria c) {

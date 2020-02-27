@@ -44,15 +44,23 @@ public class PerformerService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(Performer p) {
-		pb.update(p);
-		return Response.ok().build();
+		boolean success = pb.update(p);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@PathParam("id") int id) {
-		pb.delete(id);
-		return Response.ok().build();
+		boolean success = pb.delete(id);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 }

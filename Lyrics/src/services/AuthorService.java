@@ -44,15 +44,23 @@ public class AuthorService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(Author a) {
-		ab.update(a);
-		return Response.ok().build();
+		boolean success = ab.update(a);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@PathParam("id") int id) {
-		ab.delete(id);
-		return Response.ok().build();
+		boolean success = ab.delete(id);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 }

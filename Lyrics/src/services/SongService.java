@@ -44,15 +44,23 @@ public class SongService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(Song s) {
-		sb.update(s);
-		return Response.ok().build();
+		boolean success = sb.update(s);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@PathParam("id") int id) {
-		sb.delete(id);
-		return Response.ok().build();
+		boolean success = sb.delete(id);
+		if(success) {
+			return Response.ok().build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 }

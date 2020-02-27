@@ -26,15 +26,25 @@ public class AuthorBean {
 		em.persist(a);
 	}
 
-	public void update(Author a) {
+	public boolean update(Author a) {
 		Author og = em.find(Author.class, a.getId());
-		og.copyValues(a);
-		em.merge(og);
+		if(og != null) {
+			og.copyValues(a);
+			em.merge(og);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void delete(int id) {
+	public boolean delete(int id) {
 		Author a = em.find(Author.class, id);
-		em.remove(a);
+		if(a != null) {
+			em.remove(a);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
