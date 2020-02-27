@@ -53,9 +53,30 @@ public class SongBean {
 		em.remove(s);
 	}
 
+	private List<Song> createQueryAndGetResultList(String centre, SearchCriteria c) {
+		String firstPart = "select distinct s from Song s left join fetch ";
+		String secondPart = " where s.approved = true and s.title like :title and s.lyrics like :lyrics";
+		return em.createQuery(firstPart + centre + secondPart, Song.class).setParameter("title", "%" + c.getTitle() + "%").setParameter("lyrics", "%" + c.getLyrics() + "%").getResultList();
+	}
+
 	public List<Song> search(SearchCriteria c) {
-		List<Song> result = em.createQuery("select distinct s from Song s where s.title like :title and s.lyrics like :lyrics", Song.class).setParameter("title", "%" + c.getTitle() + "%").setParameter("lyrics", "%" + c.getLyrics() + "%").getResultList();
+		String musicBy = "s.performer left join fetch s.album left join fetch s.musicBy";
+		String lyricsBy = "s.lyricsBy";
+		String comments = "s.comments";
+		List<Song> result = createQueryAndGetResultList(musicBy, c);
+		result = createQueryAndGetResultList(lyricsBy, c);
+		result = createQueryAndGetResultList(comments, c);
 		return result;
+	}
+
+	public boolean approve(int id) {
+		Song s = em.find(Song.class, id);
+		if(s != null) {
+			s.approve();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

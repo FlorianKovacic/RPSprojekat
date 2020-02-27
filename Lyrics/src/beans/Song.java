@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import auxiliary.Language;
+
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Song implements Serializable {
@@ -27,6 +29,8 @@ public class Song implements Serializable {
 	private Integer id;
 	private String title;
 	private String lyrics;
+	private Language language;
+	private Boolean approved;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Performer performer;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -64,6 +68,22 @@ public class Song implements Serializable {
 
 	public void setLyrics(String lyrics) {
 		this.lyrics = lyrics;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
 	}
 
 	public Performer getPerformer() {
@@ -105,6 +125,10 @@ public class Song implements Serializable {
 		album = other.album;
 		musicBy = other.musicBy;
 		lyricsBy = other.lyricsBy;*/
+	}
+
+	public void approve() {
+		setApproved(true);
 	}
 
 }

@@ -1,8 +1,12 @@
-<jboss-deployment-structure>
-  <deployment>
-    <!-- These add additional classes to the module. In this case it is the same as including the jar in the EAR's lib directory -->
-    <resources>
-      <resource-root path="jackson-datatype-hibernate5-2.10.2.jar" />
-    </resources>
-  </deployment>
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+        <deployment>
+                <exclusions>
+                        <module name="org.jboss.resteasy.resteasy-jackson-provider" />
+                        <module name="org.jboss.resteasy.resteasy-jettison-provider" />
+                </exclusions>
+                <dependencies>
+                        <module name="org.jboss.resteasy.resteasy-jackson2-provider" services="import" />
+                </dependencies>
+        </deployment>
 </jboss-deployment-structure>
