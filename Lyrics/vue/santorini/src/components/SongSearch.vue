@@ -17,6 +17,7 @@
 
 <script>
 import songElement from './SongPage.vue'
+import Vue from 'vue'
 
 export default {
 	name: 'songSearch',
@@ -41,7 +42,7 @@ export default {
 				album : this.album,
 				performers : this.performers
 			};
-			this.$http.post("http://localhost:8080/Lyrics/api/songsearch", this.criteria).then(
+			Vue.http.post("http://localhost:8080/Lyrics/api/songsearch", this.criteria).then(
 				response => {
 					this.results = response.body;
 				}

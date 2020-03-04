@@ -8,7 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import auxiliary.JWT;
 import beans.User;
 import session.UserBean;
 
@@ -20,11 +19,10 @@ public class LoginService {
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces("application/jwt")
 	public Response login(User user) {
-		JWT jwt = ub.login(user);
-		int hash = jwt.getHash();
-		if(hash != -1) {
+		String jwt = ub.login(user);
+		if(jwt != null) {
 			return Response.ok(jwt).build();
 		} else {
 			return Response.status(400).build();

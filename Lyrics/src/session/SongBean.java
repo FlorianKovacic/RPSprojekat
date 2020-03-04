@@ -35,10 +35,10 @@ public class SongBean {
 	}
 
 	public void save(Song s) {
-		int albumId = s.getAlbum().getId();
+		/*int albumId = s.getAlbum().getId();
 		Album realAlbum = ab.getById(albumId);
 		s.setAlbum(realAlbum);
-		realAlbum.getSongs().add(s);
+		realAlbum.getSongs().add(s);*/
 		em.persist(s);
 	}
 

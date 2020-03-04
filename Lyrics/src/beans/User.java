@@ -18,6 +18,7 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	private String emailAdress;
+	private boolean admin;
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Comment> comments = new ArrayList<Comment>();
 
@@ -39,6 +40,14 @@ public class User implements Serializable{
 
 	public void setEmailAdress(String emailAdress) {
 		this.emailAdress = emailAdress;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public List<Comment> getComments() {

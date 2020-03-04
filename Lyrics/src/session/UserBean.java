@@ -4,9 +4,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import auxiliary.JWT;
-import auxiliary.JWTGeneratorAndValidator;
 import beans.User;
+import jwt.JWTGeneratorAndValidator;
 
 @Stateless
 public class UserBean {
@@ -14,10 +13,10 @@ public class UserBean {
 	@PersistenceContext(name = "lyrics")
 	EntityManager em;
 
-	public JWT login(User dummy) {
+	public String login(User dummy) {
 		User user = em.find(User.class, dummy.getUsername());
 		if(user == null || !dummy.getPassword().equals(user.getPassword())) {
-			return new JWT(-1);
+			return null;
 		} else {
 			return JWTGeneratorAndValidator.generateJWT(user);
 		}

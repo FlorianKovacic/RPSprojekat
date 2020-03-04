@@ -4,6 +4,7 @@
 		<songSearch></songSearch>
 		<albumElement v-for="album in albums" v-bind:key="album.id" v-bind:album="album"></albumElement>
 		<login></login>
+		<addSong></addSong>
 	</div>
 </template>
 
@@ -13,6 +14,7 @@ import songElement from './SongPage.vue'
 import albumElement from './Album.vue'
 import songSearch from './SongSearch.vue'
 import login from './Login.vue'
+import addSong from './AddSong.vue'
 
 export default {
 	name: 'Main',
@@ -26,7 +28,8 @@ export default {
 		songElement,
 		albumElement,
 		songSearch,
-		login
+		login,
+		addSong
 	},
 	methods: {
 		getSongs: function() {
