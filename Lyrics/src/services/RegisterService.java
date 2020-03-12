@@ -23,7 +23,7 @@ public class RegisterService {
 		if(success) {
 			return Response.ok().build();
 		} else {
-			return Response.status(500).build();
+			return Response.status(400).build();
 		}
 	}
 

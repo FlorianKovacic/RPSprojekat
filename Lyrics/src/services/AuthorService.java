@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import beans.Author;
 import session.AuthorBean;
 
-@Path("Author")
+@Path("author")
 public class AuthorService {
 
 	@Inject

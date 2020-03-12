@@ -1,8 +1,10 @@
 <template>
 	<div>
 		<form v-on:submit.prevent="login">
-			<p><input v-model="username" type="text"/></p>
-			<p><input v-model="password" type="text"/></p>
+			<input v-model="username" type="text" placeholder="username" required/>
+			<br/>
+			<input v-model="password" type="text" placeholder="password" required/>
+			<br/>
 			<button type="submit">Login</button>
 		</form>
 		<div v-if="success" class="alert alert-success">Login successful!</div>

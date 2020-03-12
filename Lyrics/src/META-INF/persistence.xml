@@ -7,7 +7,7 @@
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:h2:mem:test"/>
+            <property name="javax.persistence.sql-load-script-source" value="META-INF/init.sql"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -10,7 +10,10 @@
 			<button v-on:click="search">Search for the song</button>
 		</p>
 		<ol>
-			<li is="songElement" v-for="song in results" v-bind:key="song.id" v-bind:song="song"></li>
+			<li v-for="song in results" v-bind:key="song.id">
+				<songElement v-bind:song="song">
+				</songElement>
+			</li>
 		</ol>
 	</div>
 </template>

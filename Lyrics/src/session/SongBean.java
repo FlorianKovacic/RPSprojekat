@@ -1,5 +1,6 @@
 package session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import beans.Album;
+import beans.Author;
+import beans.Performer;
 import beans.SearchCriteria;
 import beans.Song;
 
@@ -16,6 +19,10 @@ public class SongBean {
 
 	@Inject
 	AlbumBean ab;
+	@Inject
+	PerformerBean pb;
+	@Inject
+	AuthorBean tb;
 
 	@PersistenceContext(name = "lyrics")
 	EntityManager em;
@@ -35,10 +42,31 @@ public class SongBean {
 	}
 
 	public void save(Song s) {
-		/*int albumId = s.getAlbum().getId();
+		int albumId = s.getAlbum().getId();
 		Album realAlbum = ab.getById(albumId);
 		s.setAlbum(realAlbum);
-		realAlbum.getSongs().add(s);*/
+		realAlbum.getSongs().add(s);
+
+		int performerId = s.getPerformer().getId();
+		Performer realPerformer = pb.getById(performerId);
+		s.setPerformer(realPerformer);
+
+		List<Author> musicBy = new ArrayList<Author>();
+		for(Author composer: s.getMusicBy()) {
+			int composerId = composer.getId();
+			Author realComposer = tb.getById(composerId);
+			musicBy.add(realComposer);
+		}
+		s.setMusicBy(musicBy);
+
+		List<Author>lyricsBy = new ArrayList<Author>();
+		for(Author lyricsWriter: s.getLyricsBy()) {
+			int lyricsWriterId = lyricsWriter.getId();
+			Author realLyricsWriter = tb.getById(lyricsWriterId);
+			lyricsBy.add(realLyricsWriter);
+		}
+		s.setLyricsBy(lyricsBy);
+
 		em.persist(s);
 	}
 
