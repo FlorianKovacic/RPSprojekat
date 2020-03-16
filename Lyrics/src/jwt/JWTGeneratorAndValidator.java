@@ -8,7 +8,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator.Builder;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Verification;
 
 import beans.User;
@@ -32,8 +31,7 @@ public class JWTGeneratorAndValidator {
 			verification = verification.withClaim("admin", true);
 		}
 		try {
-			@SuppressWarnings("unused")
-			DecodedJWT djwt = verification.build().verify(jwt);
+			verification.build().verify(jwt);
 			return true;
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
@@ -46,8 +44,13 @@ public class JWTGeneratorAndValidator {
 		if(authHeader.isEmpty()) {
 			return false;
 		} else {
-			String jwt = authHeader.get(0).substring(6);
-			return valid(jwt, adminNeeded);
+			String header1 = authHeader.get(0);
+			if(header1.length() < 6) {
+				return false;
+			} else{
+				String jwt = header1.substring(6);
+				return valid(jwt, adminNeeded);
+			}
 		}
 	}
 
