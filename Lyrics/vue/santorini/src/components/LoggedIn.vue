@@ -14,8 +14,6 @@
 
 <script>
 
-//import Vue from 'vue'
-
 	export default {
 		name: 'loggedIn',
 		props: ['loggedIn'],

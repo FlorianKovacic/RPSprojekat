@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import auxiliary.Language;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Song.class)
 public class Song implements Serializable {
 
 	private static final long serialVersionUID = 5727693416140022584L;
@@ -38,10 +38,10 @@ public class Song implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Album album;
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})
+	@JoinTable(name = "Music_by", joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})
 	private List<Author> musicBy = new ArrayList<Author>();
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})
+	@JoinTable(name = "Lyrics_by", joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})
 	private List<Author> lyricsBy = new ArrayList<Author>();
 	@OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
 	private List<Comment> comments = new ArrayList<Comment>();
@@ -125,10 +125,11 @@ public class Song implements Serializable {
 	public void copyValues(Song other) {
 		title = other.title;
 		lyrics = other.lyrics;
-		/*performer = other.performer;
+		language = other.language;
+		performer = other.performer;
 		album = other.album;
 		musicBy = other.musicBy;
-		lyricsBy = other.lyricsBy;*/
+		lyricsBy = other.lyricsBy;
 	}
 
 	public void approve() {

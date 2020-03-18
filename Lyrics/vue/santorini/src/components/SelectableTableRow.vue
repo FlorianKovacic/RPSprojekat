@@ -1,5 +1,5 @@
 <template>
-	<tr  v-bind:class="{'table-active': selected}" v-on:click="toggle">
+	<tr v-bind:class="{'table-active': selected}" v-on:click="toggle">
 		<td>
 			<slot name="content">
 			</slot>

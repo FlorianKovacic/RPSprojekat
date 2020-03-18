@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import beans.Album;
 import beans.Author;
@@ -67,6 +68,8 @@ public class SongBean {
 		}
 		s.setLyricsBy(lyricsBy);
 
+		s.setApproved(false);
+
 		em.persist(s);
 	}
 
@@ -91,20 +94,28 @@ public class SongBean {
 		}
 	}
 
-	private List<Song> createQueryAndGetResultList(String centre, SearchCriteria c) {
+	private List<Song> createQueryAndGetResultList(String centre, String conditions, SearchCriteria criteria) {
 		String firstPart = "select distinct s from Song s left join fetch ";
-		String secondPart = " where s.approved = true and s.title like :title and s.lyrics like :lyrics";
-		return em.createQuery(firstPart + centre + secondPart, Song.class).setParameter("title", "%" + c.getTitle() + "%").setParameter("lyrics", "%" + c.getLyrics() + "%").getResultList();
+		TypedQuery<Song> query = em.createQuery(firstPart + centre + conditions, Song.class);
+		if(criteria != null) {
+			query = query.setParameter("title", "%" + criteria.getTitle() + "%").setParameter("lyrics", "%" + criteria.getLyrics() + "%");
+		}
+		return query.getResultList();
 	}
 
-	public List<Song> search(SearchCriteria c) {
+	public List<Song> searchQuery(String conditions, SearchCriteria criteria) {
 		String musicBy = "s.performer left join fetch s.album left join fetch s.musicBy";
 		String lyricsBy = "s.lyricsBy";
 		String comments = "s.comments";
-		List<Song> result = createQueryAndGetResultList(musicBy, c);
-		result = createQueryAndGetResultList(lyricsBy, c);
-		result = createQueryAndGetResultList(comments, c);
+		List<Song> result = createQueryAndGetResultList(musicBy, conditions, criteria);
+		result = createQueryAndGetResultList(lyricsBy, conditions, criteria);
+		result = createQueryAndGetResultList(comments, conditions, criteria);
 		return result;
+	}
+
+	public List<Song> search(SearchCriteria criteria) {
+		String conditions = " where s.approved = true and s.title like :title and s.lyrics like :lyrics";
+		return searchQuery(conditions, criteria);
 	}
 
 	public boolean approve(int id) {
@@ -115,6 +126,11 @@ public class SongBean {
 		} else {
 			return false;
 		}
+	}
+
+	public List<Song> getPending() {
+		String conditions = " where s.approved = false";
+		return searchQuery(conditions, null);
 	}
 
 }

@@ -11,7 +11,7 @@
 		</p>
 		<ol>
 			<li v-for="song in results" v-bind:key="song.id">
-				<songElement v-bind:song="song">
+				<songElement v-bind:song="song" v-bind:full="false">
 				</songElement>
 			</li>
 		</ol>

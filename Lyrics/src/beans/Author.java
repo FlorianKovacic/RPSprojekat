@@ -32,4 +32,9 @@ public class Author implements Serializable {
 		name = other.name;
 	}
 
+	@Override
+	public String toString() {
+		return "Author :: id: " + id + " name: " + name;
+	}
+	
 }

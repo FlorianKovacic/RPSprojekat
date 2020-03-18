@@ -51,23 +51,25 @@ public class SongService {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(Song s) {
-		boolean success = sb.update(s);
-		if(success) {
+	public Response update(@Context HttpHeaders httpHeaders, Song s) {
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		if(authorized) {
+			sb.update(s);
 			return Response.ok().build();
 		} else {
-			return Response.status(404).build();
+			return Response.status(403).build();
 		}
 	}
 
 	@DELETE
 	@Path("/{id}")
-	public Response delete(@PathParam("id") int id) {
-		boolean success = sb.delete(id);
-		if(success) {
+	public Response delete(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		if(authorized) {
+			sb.delete(id);
 			return Response.ok().build();
 		} else {
-			return Response.status(404).build();
+			return Response.status(403).build();
 		}
 	}
 

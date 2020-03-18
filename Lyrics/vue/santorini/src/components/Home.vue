@@ -8,8 +8,6 @@
 
 <script>
 
-//import Vue from 'vue'
-
 	export default {
 		name: 'home',
 		data: function() {

@@ -1,29 +1,29 @@
 package services;
 
 import javax.inject.Inject;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import jwt.JWTGeneratorAndValidator;
 import session.SongBean;
 
-@Path("approve")
-public class ApproveService {
+@Path("pending")
+public class PendingService {
 
 	@Inject
 	SongBean sb;
 
-	@POST
-	@Path("/{id}")
-	public Response approve(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPending(@Context HttpHeaders httpHeaders) {
 		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
 		if(authorized) {
-			sb.approve(id);
-			return Response.ok().build();
+			return Response.ok(sb.getPending()).build();
 		} else {
 			return Response.status(403).build();
 		}
