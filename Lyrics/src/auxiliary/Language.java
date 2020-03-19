@@ -2,6 +2,6 @@ package auxiliary;
 
 public enum Language {
 	
-	Serbian, English, Other
+	Serbian, English, Other, Any
 	
 }

@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import auxiliary.Language;
 import beans.Album;
 import beans.Author;
 import beans.Performer;
@@ -98,7 +99,10 @@ public class SongBean {
 		String firstPart = "select distinct s from Song s left join fetch ";
 		TypedQuery<Song> query = em.createQuery(firstPart + centre + conditions, Song.class);
 		if(criteria != null) {
-			query = query.setParameter("title", "%" + criteria.getTitle() + "%").setParameter("lyrics", "%" + criteria.getLyrics() + "%");
+			query = query.setParameter("title", "%" + criteria.getTitle() + "%").setParameter("lyrics", "%" + criteria.getLyrics() + "%").setParameter("performer", "%" + criteria.getPerformer() + "%").setParameter("album", "%" + criteria.getAlbum() + "%");
+			if(criteria.getLanguage() != Language.Any) {
+				query = query.setParameter("language", criteria.getLanguage());
+			}
 		}
 		return query.getResultList();
 	}
@@ -114,7 +118,10 @@ public class SongBean {
 	}
 
 	public List<Song> search(SearchCriteria criteria) {
-		String conditions = " where s.approved = true and s.title like :title and s.lyrics like :lyrics";
+		String conditions = " where s.approved = true and s.title like :title and s.lyrics like :lyrics and s.performer.name like :performer and s.album.title like :album";
+		if(criteria != null && criteria.getLanguage() != Language.Any) {
+			conditions += " and s.language = :language";
+		}
 		return searchQuery(conditions, criteria);
 	}
 

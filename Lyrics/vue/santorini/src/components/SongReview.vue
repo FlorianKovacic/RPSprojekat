@@ -1,10 +1,13 @@
 <template>
 	<div>
-		<ol class="list-group">
-			<li v-for="song in pendingSongs" v-bind:key="song.id" class="list-group-item list-group-item-action" v-on:click="toReview(song)">
-				<songElement v-bind:song="song" v-bind:full="false"></songElement>
-			</li>
-		</ol>
+		<div v-if="pendingSongs.length">
+			<ol class="list-group">
+				<li v-for="song in pendingSongs" v-bind:key="song.id" class="list-group-item list-group-item-action" v-on:click="toReview(song)">
+					<songElement v-bind:song="song" v-bind:full="false"></songElement>
+				</li>
+			</ol>
+		</div>
+		<div v-else>No pending submissions.</div>
 	</div>
 </template>
 

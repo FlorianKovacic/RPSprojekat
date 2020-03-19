@@ -1,22 +1,24 @@
 package beans;
 
-import java.util.List;
+import auxiliary.Language;
 
 public class SearchCriteria {
 
 	private String title;
 	private String lyrics;
+	private Language language;
+	private String performer;
 	private String album;
-	private List<String> performers;
 
 	public SearchCriteria() {
 	}
 
-	public SearchCriteria(String title, String lyrics, String album, List<String> performers) {
+	public SearchCriteria(String title, String lyrics, Language language, String album, String performer) {
 		this.title = title;
 		this.lyrics = lyrics;
+		this.language = language;
+		this.performer = performer;
 		this.album = album;
-		this.performers = performers;
 	}
 
 	public String getTitle() {
@@ -27,12 +29,16 @@ public class SearchCriteria {
 		return lyrics;
 	}
 
-	public String getAlbum() {
-		return album;
+	public Language getLanguage() {
+		return language;
 	}
 
-	public List<String> getPerformers() {
-		return performers;
+	public String getPerformer() {
+		return performer;
+	}
+
+	public String getAlbum() {
+		return album;
 	}
 
 }

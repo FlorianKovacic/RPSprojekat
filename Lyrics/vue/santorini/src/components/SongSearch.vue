@@ -1,20 +1,39 @@
 <template>
 	<div>
-		<p>
-			<input v-model="title" placeholder="title"/>
-		</p>
-		<p>
-			<input v-model="lyrics" placeholder="lyrics"/>
-		</p>
-		<p>
-			<button v-on:click="search">Search for the song</button>
-		</p>
-		<ol>
-			<li v-for="song in results" v-bind:key="song.id">
-				<songElement v-bind:song="song" v-bind:full="false">
-				</songElement>
-			</li>
-		</ol>
+		<input v-model="title" placeholder="title"/>
+		<br/>
+		<input v-model="lyrics" placeholder="lyrics"/>
+		<br/>
+		<input type="radio" id="serbian" value="Serbian" v-model="language"/>
+		<label for="serbian">Serbian</label>
+		<br/>
+		<input type="radio" id="english" value="English" v-model="language"/>
+		<label for="english">English</label>
+		<br/>
+		<input type="radio" id="other" value="Other" v-model="language"/>
+		<label for="other">Other</label>
+		<br/>
+		<input type="radio" id="any" value="Any" v-model="language"/>
+		<label for="any">Any</label>
+		<br/>
+		<input v-model="performer" placeholder="performer"/>
+		<br/>
+		<input v-model="album" placeholder="album"/>
+		<br/>
+		<button v-on:click="search">Search for the song</button>
+		<br/>
+		<div v-if="searchDone">
+			<div v-if="results.length">
+				Results:
+				<ol class="list-group">
+					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action">
+						<songElement v-bind:song="song" v-bind:full="false">
+						</songElement>
+					</li>
+				</ol>
+			</div>
+			<div v-else>No songs match your search criteria.</div>
+		</div>
 	</div>
 </template>
 
@@ -28,10 +47,12 @@ export default {
 		return {
 			title: '',
 			lyrics: '',
-			album: null,
-			performers: null,
+			language: 'English',
+			performer: '',
+			album: '',
 			criteria: null,
-			results: []
+			results: [],
+			searchDone: false
 		}
 	},
 	components: {
@@ -40,14 +61,19 @@ export default {
 	methods: {
 		search: function() {
 			this.criteria = {
-				title : this.title,
-				lyrics : this.lyrics,
-				album : this.album,
-				performers : this.performers
+				"title" : this.title,
+				"lyrics" : this.lyrics,
+				"language" : this.language,
+				"performer" : this.performer,
+				"album" : this.album
 			};
 			Vue.http.post("http://localhost:8080/Lyrics/api/songsearch", this.criteria).then(
 				response => {
 					this.results = response.body;
+				}
+			).then(
+				() => {
+					this.searchDone = true;
 				}
 			);
 		}
