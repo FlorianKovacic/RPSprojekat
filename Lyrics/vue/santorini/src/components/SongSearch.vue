@@ -26,7 +26,7 @@
 			<div v-if="results.length">
 				Results:
 				<ol class="list-group">
-					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action">
+					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action" v-on:click="toSong(song)">
 						<songElement v-bind:song="song" v-bind:full="false">
 						</songElement>
 					</li>
@@ -76,6 +76,9 @@ export default {
 					this.searchDone = true;
 				}
 			);
+		},
+		toSong: function(song) {
+			this.$emit('toSong', song);
 		}
 	}
 }

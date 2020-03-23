@@ -10,11 +10,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import auxiliary.Language;
+import auxiliary.SearchCriteria;
 import beans.Album;
 import beans.Author;
 import beans.Performer;
-import beans.SearchCriteria;
 import beans.Song;
+import beans.User;
 
 @Stateless
 public class SongBean {
@@ -30,14 +31,14 @@ public class SongBean {
 	EntityManager em;
 
 	public List<Song> getAll() {
-		List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.musicBy", Song.class).getResultList();
+		List<Song> result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy", Song.class).getResultList();
 		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy", Song.class).getResultList();
 		result = em.createQuery("select distinct s from Song s left join fetch s.comments", Song.class).getResultList();
 		return result;
 	}
 
 	public Song getById(int id) {
-		Song result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		Song result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
 		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
 		result = em.createQuery("select distinct s from Song s left join fetch s.comments where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
 		return result;
@@ -68,6 +69,11 @@ public class SongBean {
 			lyricsBy.add(realLyricsWriter);
 		}
 		s.setLyricsBy(lyricsBy);
+
+		String username = s.getUploader().getUsername();
+		User realUser = em.find(User.class, username);
+		s.setUploader(realUser);
+		realUser.getSongs().add(s);
 
 		s.setApproved(false);
 
@@ -108,7 +114,7 @@ public class SongBean {
 	}
 
 	public List<Song> searchQuery(String conditions, SearchCriteria criteria) {
-		String musicBy = "s.performer left join fetch s.album left join fetch s.musicBy";
+		String musicBy = "s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy";
 		String lyricsBy = "s.lyricsBy";
 		String comments = "s.comments";
 		List<Song> result = createQueryAndGetResultList(musicBy, conditions, criteria);

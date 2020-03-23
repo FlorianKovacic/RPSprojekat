@@ -15,12 +15,13 @@
 			</li>
 		</ul>
 		<home v-if="state === 'home'"></home>
-		<songSearch v-else-if="state === 'search'"></songSearch>
+		<songSearch v-else-if="state === 'search'" v-on:toSong="toSong($event)"></songSearch>
 		<addSong v-else-if="state === 'submit'" v-bind:auth="auth"></addSong>
 		<login v-else-if="state === 'login'" v-on:logIn="logIn()"></login>
 		<registration v-else-if="state === 'registration'"></registration>
 		<songReview v-else-if="state === 'review'" v-on:toReview="toReview($event)"></songReview>
 		<addSong v-else-if="state === 'reviewing'" v-bind:auth="auth" v-bind:songToBeApproved="song"></addSong>
+		<songPage v-else-if="state === 'song'" v-bind:song="song" v-bind:full="true"></songPage>
 		<loggedIn v-bind:loggedIn="auth !== 'none'" v-on:toLogin="toLogin()" v-on:toRegistration="toRegistration()" v-on:logOut="logOut()"></loggedIn>
 	</div>
 </template>
@@ -35,6 +36,7 @@ import registration from './Registration.vue'
 import home from './Home.vue'
 import loggedIn from './LoggedIn.vue'
 import songReview from './SongReview.vue'
+import songPage from './SongPage.vue'
 
 export default {
 	name: 'Main',
@@ -52,7 +54,8 @@ export default {
 		registration,
 		home,
 		loggedIn,
-		songReview
+		songReview,
+		songPage
 	},
 	methods: {
 		setState: function(state) {
@@ -76,6 +79,10 @@ export default {
 		},
 		toReview: function(song) {
 			this.setState('reviewing');
+			this.song = song;
+		},
+		toSong: function(song) {
+			this.setState('song');
 			this.song = song;
 		}
 	},

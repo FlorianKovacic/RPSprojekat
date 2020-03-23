@@ -20,7 +20,7 @@ public class ApproveService {
 	@POST
 	@Path("/{id}")
 	public Response approve(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			sb.approve(id);
 			return Response.ok().build();

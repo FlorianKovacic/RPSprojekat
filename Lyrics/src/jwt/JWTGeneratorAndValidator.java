@@ -18,28 +18,31 @@ public class JWTGeneratorAndValidator {
 	private static final Algorithm algorithm = Algorithm.HMAC256(secret);
 
 	public static String generateJWT(User user) {
-		Builder builder = JWT.create();
+		Builder builder = JWT.create().withClaim("username", user.getUsername());
 		if(user.isAdmin()) {
 			builder = builder.withClaim("admin", true);
 		}
 		return builder.sign(algorithm);
 	}
 
-	public static boolean valid(String jwt, boolean adminNeeded) {
+	public static boolean valid(String jwt, boolean adminNeeded, String providedUsername) {
 		Verification  verification= JWT.require(algorithm);
 		if(adminNeeded) {
 			verification = verification.withClaim("admin", true);
+		}
+		if(providedUsername != null) {
+			verification = verification.withClaim("username", providedUsername);
 		}
 		try {
 			verification.build().verify(jwt);
 			return true;
 		} catch (JWTVerificationException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 	}
 
-	public static boolean verify(HttpHeaders headers, boolean adminNeeded) {
+	public static boolean verify(HttpHeaders headers, boolean adminNeeded, String providedUsername) {
 		List<String> authHeader = headers.getRequestHeader("Authorization");
 		if(authHeader.isEmpty()) {
 			return false;
@@ -49,7 +52,7 @@ public class JWTGeneratorAndValidator {
 				return false;
 			} else{
 				String jwt = header1.substring(6);
-				return valid(jwt, adminNeeded);
+				return valid(jwt, adminNeeded, providedUsername);
 			}
 		}
 	}

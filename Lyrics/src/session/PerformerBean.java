@@ -15,7 +15,7 @@ public class PerformerBean {
 	EntityManager em;
 
 	public List<Performer> getAll() {
-		return (List<Performer>) em.createQuery("select p from Performer p", Performer.class).getResultList();
+		return em.createQuery("select distinct p from Performer p order by p.name", Performer.class).getResultList();
 	}
 
 	public Performer getById(int id) {

@@ -15,7 +15,7 @@ public class AlbumBean {
 	EntityManager em;
 
 	public List<Album> getAll() {
-		return (List<Album>) em.createQuery("select a from Album a left join fetch a.songs", Album.class).getResultList();
+		return em.createQuery("select distinct a from Album a left join fetch a.songs order by a.title", Album.class).getResultList();
 	}
 
 	public Album getById(int id) {

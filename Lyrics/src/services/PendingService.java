@@ -21,7 +21,7 @@ public class PendingService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPending(@Context HttpHeaders httpHeaders) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			return Response.ok(sb.getPending()).build();
 		} else {

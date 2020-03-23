@@ -11,11 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Album implements Serializable {
 
 	private static final long serialVersionUID = -4945081127138500645L;
@@ -65,6 +62,11 @@ public class Album implements Serializable {
 		title = other.title;
 		year = other.year;
 		songs = other.songs;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Album:: id: %d; title: %s", id, title);
 	}
 
 }

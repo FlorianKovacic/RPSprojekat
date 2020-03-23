@@ -1,6 +1,4 @@
-package beans;
-
-import auxiliary.Language;
+package auxiliary;
 
 public class SearchCriteria {
 

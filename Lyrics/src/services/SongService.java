@@ -33,7 +33,7 @@ public class SongService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response save(@Context HttpHeaders httpHeaders, Song s) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, false);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, false, s.getUploader().getUsername());
 		if(authorized) {
 			sb.save(s);
 			return Response.ok().build();
@@ -52,7 +52,7 @@ public class SongService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@Context HttpHeaders httpHeaders, Song s) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			sb.update(s);
 			return Response.ok().build();
@@ -64,7 +64,7 @@ public class SongService {
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			sb.delete(id);
 			return Response.ok().build();

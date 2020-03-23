@@ -33,7 +33,7 @@ public class PerformerService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response save(@Context HttpHeaders httpHeaders, Performer p) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			pb.save(p);
 			return Response.ok().build();
@@ -52,7 +52,7 @@ public class PerformerService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@Context HttpHeaders httpHeaders, Performer p) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			pb.update(p);
 			return Response.ok().build();
@@ -64,7 +64,7 @@ public class PerformerService {
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			pb.delete(id);
 			return Response.ok().build();

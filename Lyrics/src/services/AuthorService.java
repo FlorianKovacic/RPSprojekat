@@ -33,7 +33,7 @@ public class AuthorService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response save(@Context HttpHeaders httpHeaders, Author a) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			ab.save(a);
 			return Response.ok().build();
@@ -52,7 +52,7 @@ public class AuthorService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@Context HttpHeaders httpHeaders, Author a) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			ab.update(a);
 			return Response.ok().build();
@@ -64,7 +64,7 @@ public class AuthorService {
 	@DELETE
 	@Path("/{id}")
 	public Response delete(@Context HttpHeaders httpHeaders, @PathParam("id") int id) {
-		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true);
+		boolean authorized = JWTGeneratorAndValidator.verify(httpHeaders, true, null);
 		if(authorized) {
 			ab.delete(id);
 			return Response.ok().build();

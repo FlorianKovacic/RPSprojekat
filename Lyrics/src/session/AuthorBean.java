@@ -15,7 +15,7 @@ public class AuthorBean {
 	EntityManager em;
 
 	public List<Author> getAll() {
-		return (List<Author>) em.createQuery("select a from Author a", Author.class).getResultList();
+		return em.createQuery("select distinct a from Author a order by a.name", Author.class).getResultList();
 	}
 
 	public Author getById(int id) {

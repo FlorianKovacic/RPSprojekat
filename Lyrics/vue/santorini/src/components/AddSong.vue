@@ -52,6 +52,8 @@
 					<button type="button" v-on:click="removeSelected('lyricsTable', selectedLyrics)">Remove selected lyrics writers</button>
 					<br/>
 					<button type="submit">{{songToBeApproved === null ? 'Submit this song' : 'Approve of this song'}}</button>
+					<br/>
+					<button v-if="songToBeApproved !== null" type="button" v-on:click="revert()">Revert changes</button>
 					<div v-if="success" class="alert alert-success">{{songToBeApproved === null ? 'Song successfully submitted!' : 'Song approved of!'}}</div>
 					<div v-if="failure" class="alert alert-danger">{{songToBeApproved === null ? 'Unauthorized access! You need to log in to perform this action.' : 'Access denied!'}}</div>
 				</form>
@@ -107,6 +109,9 @@ export default {
 					},
 					"album": {
 						"id": this.album
+					},
+					"uploader": {
+						"username": this.$session.get('username')
 					},
 					"musicBy": this.selectedMusic,
 					"lyricsBy": this.selectedLyrics
@@ -196,8 +201,8 @@ export default {
 				this.language = this.songToBeApproved.language;
 				this.performer = this.songToBeApproved.performer.id;
 				this.album = this.songToBeApproved.album.id;
-				this.selectedMusic = this.songToBeApproved.musicBy;
-				this.selectedLyrics = this.songToBeApproved.lyricsBy;
+				this.selectedMusic = this.songToBeApproved.musicBy.splice(0);
+				this.selectedLyrics = this.songToBeApproved.lyricsBy.splice(0);
 			},
 			editAndApprove: function() {
 				var updated = this.gatherData();
@@ -223,6 +228,9 @@ export default {
 				} else {
 					this.editAndApprove();
 				}
+			},
+			revert: function() {
+				this.fillIn();
 			}
 		},
 		mounted: function() {

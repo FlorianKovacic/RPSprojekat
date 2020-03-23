@@ -21,6 +21,8 @@ public class User implements Serializable{
 	private boolean admin;
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Comment> comments = new ArrayList<Comment>();
+	@OneToMany(mappedBy = "uploader", fetch = FetchType.LAZY)
+	private List<Song> songs = new ArrayList<Song>();
 
 	public String getUsername() {
 		return username;
@@ -56,6 +58,14 @@ public class User implements Serializable{
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public List<Song> getSongs() {
+		return songs;
+	}
+
+	public void setSongs(List<Song> songs) {
+		this.songs = songs;
 	}
 
 }

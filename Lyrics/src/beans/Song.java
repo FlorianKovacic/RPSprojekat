@@ -37,6 +37,8 @@ public class Song implements Serializable {
 	private Performer performer;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Album album;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User uploader;
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "Music_by", joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})
 	private List<Author> musicBy = new ArrayList<Author>();
@@ -106,6 +108,14 @@ public class Song implements Serializable {
 		this.album = album;
 	}
 
+	public User getUploader() {
+		return uploader;
+	}
+
+	public void setUploader(User uploader) {
+		this.uploader = uploader;
+	}
+
 	public List<Author> getMusicBy() {
 		return musicBy;
 	}
@@ -120,6 +130,14 @@ public class Song implements Serializable {
 
 	public void setLyricsBy(List<Author> lyricsBy) {
 		this.lyricsBy = lyricsBy;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public void copyValues(Song other) {
