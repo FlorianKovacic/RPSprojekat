@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,17 +30,22 @@ public class Song implements Serializable {
 	private static final long serialVersionUID = 5727693416140022584L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String title;
+	@Column(length = 5000)
 	private String lyrics;
+	@Enumerated(EnumType.STRING)
 	private Language language;
 	private Boolean approved;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "performer")
 	private Performer performer;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "album")
 	private Album album;
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uploader")
 	private User uploader;
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "Music_by", joinColumns = {@JoinColumn(name="song_id")}, inverseJoinColumns= {@JoinColumn(name="author_id")})

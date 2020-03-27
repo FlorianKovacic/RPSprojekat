@@ -13,7 +13,7 @@ public class Author implements Serializable {
 	private static final long serialVersionUID = 6849452348818159106L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 

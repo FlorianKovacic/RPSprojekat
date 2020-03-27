@@ -2,12 +2,15 @@
 	<div>
 		<div v-if="loggedIn">
 			<div>Logged in as: {{this.$session.get('username')}}</div>
-			<a href="#" v-on:click="logOut">Log out</a>
+			<a href="#" v-on:click="logOut">[Log out]</a>
 		</div>
 		<div v-else>
-			<a href="#" v-on:click="toLogin">Log in</a>
-			<br/>
-			<a href="#" v-on:click="toRegistration">Register</a>
+			<span>
+				<a href="#" v-on:click="toLogin">[Log in]</a>
+			</span>
+			<span>
+				<a href="#" v-on:click="toRegistration">[Register]</a>
+			</span>
 		</div>
 	</div>
 </template>

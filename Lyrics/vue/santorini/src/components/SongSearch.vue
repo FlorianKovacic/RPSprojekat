@@ -1,32 +1,40 @@
 <template>
 	<div>
-		<input v-model="title" placeholder="title"/>
-		<br/>
-		<input v-model="lyrics" placeholder="lyrics"/>
-		<br/>
-		<input type="radio" id="serbian" value="Serbian" v-model="language"/>
-		<label for="serbian">Serbian</label>
-		<br/>
-		<input type="radio" id="english" value="English" v-model="language"/>
-		<label for="english">English</label>
-		<br/>
-		<input type="radio" id="other" value="Other" v-model="language"/>
-		<label for="other">Other</label>
-		<br/>
-		<input type="radio" id="any" value="Any" v-model="language"/>
-		<label for="any">Any</label>
-		<br/>
-		<input v-model="performer" placeholder="performer"/>
-		<br/>
-		<input v-model="album" placeholder="album"/>
-		<br/>
-		<button v-on:click="search">Search for the song</button>
-		<br/>
+		<div class="mb-1">
+			<label for="title">Title:</label>
+			<input type="text" id="title" v-model="title" placeholder="title"/>
+		</div>
+		<div class="mb-3">
+			<label for="lyrics">Lyrics:</label>
+			<input type="text" id="lyrics" v-model="lyrics" placeholder="lyrics"/>
+		</div>
+		<div class="mb-3">
+			<span class="mr-3">Language:</span>
+			<input type="radio" id="serbian" value="Serbian" v-model="language"/>
+			<label for="serbian">Serbian</label>
+			<input type="radio" id="english" value="English" v-model="language"/>
+			<label for="english">English</label>
+			<input type="radio" id="other" value="Other" v-model="language"/>
+			<label for="other">Other</label>
+			<input type="radio" id="any" value="Any" v-model="language"/>
+			<label for="any">Any</label>
+		</div>
+		<div class="mb-1">
+			<label for="peformer">Performer:</label>
+			<input type="text" id="performer" v-model="performer" placeholder="performer"/>
+		</div>
+		<div class="mb-3">
+			<label for="album">Album:</label>
+			<input type="text" id="album" v-model="album" placeholder="album"/>
+		</div>
+		<div class="my-5">
+			<button class="btn-primary" v-on:click="search">Search for the song</button>
+		</div>
 		<div v-if="searchDone">
 			<div v-if="results.length">
-				Results:
+				<div class="mb-3">Results:</div>
 				<ol class="list-group">
-					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action" v-on:click="toSong(song)">
+					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action mb-2" v-on:click="toSong(song)">
 						<songElement v-bind:song="song" v-bind:full="false">
 						</songElement>
 					</li>

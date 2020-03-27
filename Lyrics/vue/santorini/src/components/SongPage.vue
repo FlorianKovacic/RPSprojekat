@@ -1,36 +1,44 @@
 <template>
 	<div v-if="full">
 		<h1>{{song.title}}</h1>
-		<h3>By {{song.performer ? song.performer.name : 'unknown artist'}}</h3>
-		<p>{{song.lyrics}}</p>
+		<h4>By {{song.performer ? song.performer.name : 'unknown artist'}}</h4>
+		<div class="my-5">
+			<p><pre>{{song.lyrics}}</pre></p>
+		</div>
 		<p v-if="song.album">From {{song.album.title}} - {{song.album.year}}</p>
-		<div>Music composed by:</div>
-		<p v-if="song.musicBy.length">{{song.musicBy.map((m) => m.name).toString()}}</p>
-		<div v-else>unknown</div>
-		<div>Lyrics written by:</div>
-		<p v-if="song.lyricsBy.length">{{song.lyricsBy.map((l) => l.name).toString()}}</p>
-		<div v-else>unknown</div>
-		<br/>
+		<div class="mb-2">
+			<div>Music composed by:</div>
+			<p v-if="song.musicBy.length">{{song.musicBy.map((m) => m.name).toString()}}</p>
+			<div v-else>unknown</div>
+		</div>
+		<div class="mb-4">
+			<div>Lyrics written by:</div>
+			<p v-if="song.lyricsBy.length">{{song.lyricsBy.map((l) => l.name).toString()}}</p>
+			<div v-else>unknown</div>
+		</div>
 		<div>Uploaded by:</div>
 		<p>{{song.uploader.username}}</p>
 		<br/>
 		<div>
-			<textarea v-model="text" rows="3" cols="60"></textarea>
-			<br/>
-			<button type="button" v-on:click="comment()">Post</button>
+			<div class="mb-3">
+				<textarea v-model="text" rows="3" cols="60" placeholder="Write a comment..."></textarea>
+			</div>
+			<div class="mb-3">
+				<button type="button" v-on:click="comment()">Post</button>
+			</div>
 			<div class="alert alert-danger" v-if="failure">You have to log in to leave a comment!</div>
 		</div>
 		<div v-if="comments.length">
 			<ul class="list-group">
-				<li v-for="comment in comments" v-bind:key="comment.id" class="list-group-item">
+				<li v-for="comment in comments" v-bind:key="comment.id" class="list-group-item mb-4 container rounded">
 					<comment v-bind:comment="comment"></comment>
 				</li>
 			</ul>
 		</div>
-		<div v-else>Be the first to leave a comment!</div>
+		<div class="mb-3" v-else>Be the first to leave a comment!</div>
 	</div>
 	<div v-else>
-		{{song.title}} by {{song.performer.name}}
+		{{song.title + ' by ' + (song.performer ? song.performer.name : 'unknown artist')}}
 	</div>
 </template>
 

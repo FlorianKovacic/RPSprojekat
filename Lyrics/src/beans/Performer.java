@@ -13,7 +13,7 @@ public class Performer implements Serializable {
 	private static final long serialVersionUID = 298189773882731190L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
 

@@ -6,54 +6,95 @@
 			</div>
 			<div v-else>
 				<form v-on:submit.prevent="submit()">
-					<input v-model="title" placeholder="title" required/>
-					<br/>
-					<textarea v-model="lyrics" placeholder="lyrics" rows="30" cols="50" required/>
-					<br/>
-					<input type="radio" id="serbian" value="Serbian" v-model="language"/>
-					<label for="serbian">Serbian</label>
-					<br/>
-					<input type="radio" id="english" value="English" v-model="language"/>
-					<label for="english">English</label>
-					<br/>
-					<input type="radio" id="other" value="Other" v-model="language"/>
-					<label for="other">Other</label>
-					<br/>
-					<select v-model="performer" required>
-						<option v-for="performer in performers" v-bind:key="performer.id" v-bind:value="performer.id">{{performer.name}}</option>
-					</select>
-					<br/>
-					<select v-model="album" required>
-						<option v-for="album in albums" v-bind:key="album.id" v-bind:value="album.id">{{album.title}}</option>
-					</select>
-					<br/>
-					<select v-model="author">
-						<option v-for="author in authors" v-bind:key="author.id" v-bind:value="author">{{author.name}}</option>
-					</select>
-					<br/>
-					<button type="button" v-on:click="addMusic">Add author to composers</button>
-					<br/>
-					<button type="button" v-on:click="addLyrics">Add author to lyrics writers</button>
-					<br/>
-					<p>
-						Composers:
-					</p>
-					<table id="musicTable" class="table">
-						<tbody><tr is="selectableRow" v-for="music in selectedMusic" v-bind:key="music.id" ><div slot="content">{{music.name}}</div></tr></tbody>
-					</table>
-					<button type="button" v-on:click="removeSelected('musicTable', selectedMusic)">Remove selected composers</button>
-					<br/>
-					<p>
-						Lyrics writers:
-					</p>
-					<table id="lyricsTable" class="table">
-						<tbody><tr is="selectableRow" v-for="lyrics in selectedLyrics" v-bind:key="lyrics.id" ><div slot="content">{{lyrics.name}}</div></tr></tbody>
-					</table>
-					<button type="button" v-on:click="removeSelected('lyricsTable', selectedLyrics)">Remove selected lyrics writers</button>
-					<br/>
-					<button type="submit">{{songToBeApproved === null ? 'Submit this song' : 'Approve of this song'}}</button>
-					<br/>
-					<button v-if="songToBeApproved !== null" type="button" v-on:click="revert()">Revert changes</button>
+					<div class="form-group mb-5">
+						<fieldset class="border">
+							<div class="form-group mb-5">
+								<legend>General</legend>
+							</div>
+							<div class="form-group mb-3">
+								<label for="title">Title:</label>
+								<input id="title" v-model="title" placeholder="title" required/>
+							</div>
+							<div class="form-group mb-3">
+								<div class="mb-1">
+									<label for="lyrics">Lyrics:</label>
+								</div>
+								<textarea id="lyrics" v-model="lyrics" placeholder="lyrics" rows="30" cols="80" required/>
+							</div>
+							<div class="form-group mb-3">
+								<span class="mr-3">Language:</span>
+								<input type="radio" id="serbian" value="Serbian" v-model="language"/>
+								<label for="serbian">Serbian</label>
+								<input type="radio" id="english" value="English" v-model="language"/>
+								<label for="english">English</label>
+								<input type="radio" id="other" value="Other" v-model="language"/>
+								<label for="other">Other</label>
+							</div>
+							<div class="form-group mb-1">
+								<label for="performer">Performer:</label>
+								<select id="performer" v-model="performer" required>
+									<option v-bind:value="-1">Unknown</option>
+									<option v-for="performer in performers" v-bind:key="performer.id" v-bind:value="performer.id">{{performer.name}}</option>
+								</select>
+							</div>
+							<div class="form-group mb-3">
+								<label for="album">Album:</label>
+								<select id="album" v-model="album" required>
+									<option v-bind:value="-1">Unknown</option>
+									<option v-for="album in albums" v-bind:key="album.id" v-bind:value="album.id">{{album.title}}</option>
+								</select>
+							</div>
+						</fieldset>
+					</div>
+					<div class="form-group mb-5">
+						<fieldset class="border">
+							<div class="form-group mb-5">
+								<legend>Authors of the music and lyrics</legend>
+							</div>
+							<div class="form-group mb-3">
+								<label for="author">Select author:</label>
+								<select v-model="author">
+									<option v-for="author in authors" v-bind:key="author.id" v-bind:value="author">{{author.name}}</option>
+								</select>
+							</div>
+							<div class="form-group mb-2">
+								<button class="btn-light" type="button" v-on:click="addMusic">Add author to composers</button>
+							</div>
+							<div class="form-group mb-3">
+								<button class="btn-light" type="button" v-on:click="addLyrics">Add author to lyrics writers</button>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-group mb-4">Composers:</div>
+									<div class="form-group mb-3">
+										<table id="musicTable" class="table table-borderless">
+											<tbody><tr is="selectableRow" v-for="music in selectedMusic" v-bind:key="music.id" ><div slot="content">{{music.name}}</div></tr></tbody>
+										</table>
+									</div>
+									<div class="form-group mb-3">
+										<button class="btn-secondary" type="button" v-on:click="removeSelected('musicTable', selectedMusic)">Remove selected composers</button>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group mb-4">Lyrics writers:</div>
+									<div class="form-group mb-3">
+										<table id="lyricsTable" class="table table-borderless">
+											<tbody><tr is="selectableRow" v-for="lyrics in selectedLyrics" v-bind:key="lyrics.id" ><div slot="content">{{lyrics.name}}</div></tr></tbody>
+										</table>
+									</div>
+									<div class="form-group mb-3">
+										<button class="btn-secondary" type="button" v-on:click="removeSelected('lyricsTable', selectedLyrics)">Remove selected lyrics writers</button>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="form-group mb-3">
+						<button class="btn-primary" type="submit">{{songToBeApproved === null ? 'Submit this song' : 'Approve of this song'}}</button>
+					</div>
+					<div class="form-group mb-3">
+						<button class="btn-danger" v-if="songToBeApproved !== null" type="button" v-on:click="revert()">Revert changes</button>
+					</div>
 					<div v-if="success" class="alert alert-success">{{songToBeApproved === null ? 'Song successfully submitted!' : 'Song approved of!'}}</div>
 					<div v-if="failure" class="alert alert-danger">{{songToBeApproved === null ? 'Unauthorized access! You need to log in to perform this action.' : 'Access denied!'}}</div>
 				</form>
@@ -153,19 +194,15 @@ export default {
 			addMusic: function() {
 				if(this.author) {
 					this.addToSet(this.author, this.selectedMusic);
-				} else {
-					console.log('select an author');
 				}
 			},
 			addLyrics: function() {
 				if(this.author) {
 					this.addToSet(this.author, this.selectedLyrics);
-				} else {
-					console.log('select an author');
 				}
 			},
 			addToSet: function(elem, set) {
-				if(!set.includes(elem)) {
+				if(!set.some(e => e.id === elem.id)) {
 					set.push(elem);
 				}
 			},
@@ -180,7 +217,7 @@ export default {
 						}
 					}
 					if(index === -1) {
-						console.log('Fatal error!');
+						//console.log('Fatal error!');
 					} else {
 						array.splice(index, 1);
 					}
@@ -199,10 +236,10 @@ export default {
 				this.title = this.songToBeApproved.title;
 				this.lyrics = this.songToBeApproved.lyrics;
 				this.language = this.songToBeApproved.language;
-				this.performer = this.songToBeApproved.performer.id;
-				this.album = this.songToBeApproved.album.id;
-				this.selectedMusic = this.songToBeApproved.musicBy.splice(0);
-				this.selectedLyrics = this.songToBeApproved.lyricsBy.splice(0);
+				this.performer = this.songToBeApproved.performer ? this.songToBeApproved.performer.id : -1;
+				this.album = this.songToBeApproved.album ? this.songToBeApproved.album.id : -1;
+				this.selectedMusic = this.songToBeApproved.musicBy.slice(0);
+				this.selectedLyrics = this.songToBeApproved.lyricsBy.slice(0);
 			},
 			editAndApprove: function() {
 				var updated = this.gatherData();
@@ -245,3 +282,9 @@ export default {
 		}
 	};
 </script>
+
+<style>
+	textarea {
+		text-align: center
+	}
+</style>

@@ -3,6 +3,7 @@
 		<h1>
 			Welcome!
 		</h1>
+		<img src="./../assets/note.png" alt="note">
 	</div>
 </template>
 

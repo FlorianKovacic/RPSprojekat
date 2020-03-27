@@ -46,13 +46,21 @@ public class SongBean {
 
 	public void save(Song s) {
 		int albumId = s.getAlbum().getId();
-		Album realAlbum = ab.getById(albumId);
-		s.setAlbum(realAlbum);
-		realAlbum.getSongs().add(s);
+		if(albumId != -1) {
+			Album realAlbum = ab.getById(albumId);
+			s.setAlbum(realAlbum);
+			realAlbum.getSongs().add(s);
+		} else {
+			s.setAlbum(null);
+		}
 
 		int performerId = s.getPerformer().getId();
-		Performer realPerformer = pb.getById(performerId);
-		s.setPerformer(realPerformer);
+		if(performerId != -1) {
+			Performer realPerformer = pb.getById(performerId);
+			s.setPerformer(realPerformer);
+		} else {
+			s.setPerformer(null);
+		}
 
 		List<Author> musicBy = new ArrayList<Author>();
 		for(Author composer: s.getMusicBy()) {
@@ -84,6 +92,12 @@ public class SongBean {
 		Song og = em.find(Song.class, s.getId());
 		if(og != null) {
 			og.copyValues(s);
+			if(og.getAlbum().getId() == -1) {
+				og.setAlbum(null);
+			}
+			if(s.getPerformer().getId() == -1) {
+				og.setPerformer(null);
+			}
 			em.merge(og);
 			return true;
 		} else {
@@ -103,9 +117,16 @@ public class SongBean {
 
 	private List<Song> createQueryAndGetResultList(String centre, String conditions, SearchCriteria criteria) {
 		String firstPart = "select distinct s from Song s left join fetch ";
-		TypedQuery<Song> query = em.createQuery(firstPart + centre + conditions, Song.class);
+		String lastPart = " order by s.title";
+		TypedQuery<Song> query = em.createQuery(firstPart + centre + conditions + lastPart, Song.class);
 		if(criteria != null) {
-			query = query.setParameter("title", "%" + criteria.getTitle() + "%").setParameter("lyrics", "%" + criteria.getLyrics() + "%").setParameter("performer", "%" + criteria.getPerformer() + "%").setParameter("album", "%" + criteria.getAlbum() + "%");
+			query = query.setParameter("title", "%" + criteria.getTitle() + "%").setParameter("lyrics", "%" + criteria.getLyrics() + "%");
+			if(!criteria.getPerformer().equals("")) {
+				query = query.setParameter("performer", "%" + criteria.getPerformer() + "%");
+			}
+			if(!criteria.getAlbum().equals("")) {
+				query = query.setParameter("album", "%" + criteria.getAlbum() + "%");
+			}
 			if(criteria.getLanguage() != Language.Any) {
 				query = query.setParameter("language", criteria.getLanguage());
 			}
@@ -124,7 +145,13 @@ public class SongBean {
 	}
 
 	public List<Song> search(SearchCriteria criteria) {
-		String conditions = " where s.approved = true and s.title like :title and s.lyrics like :lyrics and s.performer.name like :performer and s.album.title like :album";
+		String conditions = " where s.approved = true and s.title like :title and s.lyrics like :lyrics";
+		if(!criteria.getPerformer().equals("")) {
+			conditions += " and s.performer.name like :performer";
+		}
+		if(!criteria.getAlbum().equals("")) {
+			conditions += " and s.album.title like :album";
+		}
 		if(criteria != null && criteria.getLanguage() != Language.Any) {
 			conditions += " and s.language = :language";
 		}

@@ -18,7 +18,7 @@ public class CommentBean {
 	EntityManager em;
 
 	public List<Comment> getComments(Song song) {
-		return em.createQuery("select c from Comment c where c.song.id = :id", Comment.class).setParameter("id", song.getId()).getResultList();
+		return em.createQuery("select c from Comment c where c.song.id = :id order by c.date", Comment.class).setParameter("id", song.getId()).getResultList();
 	}
 
 	public boolean save(Comment comment) {

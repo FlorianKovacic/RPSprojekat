@@ -1,19 +1,26 @@
 <template>
-	<div>
-		<ul class="nav nav-pills">
-			<li class="nav-item">
-				<a class="nav-link" v-bind:class="{active: state=== 'home'}" href="#" type="button" v-on:click="setState('home')">Home</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" v-bind:class="{active: state=== 'search'}" href="#" type="button" v-on:click="setState('search')">Search for a song</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" v-bind:class="{active: state=== 'submit'}" href="#" type="button" v-on:click="setState('submit')">Submit a song</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" v-bind:class="{active: state=== 'review'}" href="#" type="button" v-if="auth === 'admin'" v-on:click="setState('review')">Review pending submissions</a>
-			</li>
-		</ul>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-10">
+				<ul class="nav nav-pills">
+					<li class="nav-item">
+						<a class="nav-link" v-bind:class="{active: state=== 'home'}" href="#" type="button" v-on:click="setState('home')">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" v-bind:class="{active: state=== 'search'}" href="#" type="button" v-on:click="setState('search')">Search for a song</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" v-bind:class="{active: state=== 'submit'}" href="#" type="button" v-on:click="setState('submit')">Submit a song</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" v-bind:class="{active: state=== 'review'}" href="#" type="button" v-if="auth === 'admin'" v-on:click="setState('review')">Review pending submissions</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-2">
+				<loggedIn v-bind:loggedIn="auth !== 'none'" v-on:toLogin="toLogin()" v-on:toRegistration="toRegistration()" v-on:logOut="logOut()"></loggedIn>
+			</div>
+		</div>
 		<home v-if="state === 'home'"></home>
 		<songSearch v-else-if="state === 'search'" v-on:toSong="toSong($event)"></songSearch>
 		<addSong v-else-if="state === 'submit'" v-bind:auth="auth"></addSong>
@@ -22,7 +29,6 @@
 		<songReview v-else-if="state === 'review'" v-on:toReview="toReview($event)"></songReview>
 		<addSong v-else-if="state === 'reviewing'" v-bind:auth="auth" v-bind:songToBeApproved="song"></addSong>
 		<songPage v-else-if="state === 'song'" v-bind:song="song" v-bind:full="true"></songPage>
-		<loggedIn v-bind:loggedIn="auth !== 'none'" v-on:toLogin="toLogin()" v-on:toRegistration="toRegistration()" v-on:logOut="logOut()"></loggedIn>
 	</div>
 </template>
 
@@ -89,4 +95,18 @@ export default {
 	mounted: function() {
 	}
 }
-</script>>
+</script>
+
+<style>
+	body {
+		background-color: rgb(248, 244, 211, 0.5);
+	}
+	label {
+		padding-left: 5px;
+		padding-right: 15px;
+	}
+	span {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+</style>

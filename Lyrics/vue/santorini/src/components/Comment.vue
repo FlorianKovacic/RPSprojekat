@@ -2,7 +2,7 @@
 	<div>
 		{{comment.text}}
 		<br/>
-		Written by {{comment.user.username}} at {{comment.date}} [UTC].
+		<div class="float-right">Written by {{comment.user.username}} at {{comment.date}} [UTC].</div>
 	</div>
 </template>
 

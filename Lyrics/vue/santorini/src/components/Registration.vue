@@ -1,13 +1,18 @@
 <template>
-	<div>
+	<div class="py-5">
 		<form v-on:submit.prevent="register">
-			<input v-model="username" type="text" placeholder="username" required/>
-			<br/>
-			<input v-model="password" type="text" placeholder="password" required/>
-			<br/>
-			<input v-model="emailAdress" type="email" placeholder="e-mail adress" required/>
-			<br/>
-			<button type="submit">Register</button>
+			<div class="form-group mb-2">
+				<input v-model="username" type="text" placeholder="username" required/>
+			</div>
+			<div class="form-group mb-2">
+				<input v-model="password" type="text" placeholder="password" required/>
+			</div>
+			<div class="form-group mb-3">
+				<input v-model="emailAdress" type="email" placeholder="e-mail adress" required/>
+			</div>
+			<div class="form-group my-3	">
+				<button type="submit">Register</button>
+			</div>
 			<div v-if="success" class="alert alert-success">Registration successful!</div>
 			<div v-if="failure" class="alert alert-danger">Username unfortunately taken, pick another one!</div>
 		</form>
