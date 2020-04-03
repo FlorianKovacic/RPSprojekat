@@ -20,6 +20,7 @@
 
 import Vue from 'vue';
 import VueJwtDecode from 'vue-jwt-decode'
+import urls from './../main.js'
 
 export default {
 	name: "login",
@@ -29,7 +30,8 @@ export default {
 			password: '',
 			success: false,
 			failure: false,
-			user: null
+			user: null,
+			requestBase: urls.requestBase
 		}
 	},
 	methods: {
@@ -38,7 +40,7 @@ export default {
 				"username" : this.username,
 				"password" : this.password
 			};
-			this.$http.post("http://localhost:8080/Lyrics/api/login", this.user).then(
+			this.$http.post(this.requestBase + '/login', this.user).then(
 				response => {
 					const jwt = response.body;
 					this.$store.commit('setJWT', jwt);

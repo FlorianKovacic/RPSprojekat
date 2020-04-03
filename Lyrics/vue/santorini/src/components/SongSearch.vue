@@ -48,6 +48,7 @@
 <script>
 import songEntry from './SongEntry.vue'
 import Vue from 'vue'
+import urls from './../main.js'
 
 export default {
 	name: 'songSearch',
@@ -60,7 +61,8 @@ export default {
 			album: '',
 			criteria: null,
 			results: [],
-			searchDone: false
+			searchDone: false,
+			requestBase: urls.requestBase
 		}
 	},
 	components: {
@@ -75,7 +77,7 @@ export default {
 				"performer" : this.performer,
 				"album" : this.album
 			};
-			Vue.http.post("http://localhost:8080/Lyrics/api/songsearch", this.criteria).then(
+			Vue.http.post(this.requestBase + '/songsearch', this.criteria).then(
 				response => {
 					this.results = response.body;
 				}

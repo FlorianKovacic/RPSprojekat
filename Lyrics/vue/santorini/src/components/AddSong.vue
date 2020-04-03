@@ -110,6 +110,7 @@
 
 import Vue from 'vue'
 import selectableRow from './SelectableTableRow.vue'
+import urls from './../main.js'
 
 export default {
 		name: 'addSong',
@@ -130,7 +131,8 @@ export default {
 				author: null,
 				authors: [],
 				success: false,
-				failure: false
+				failure: false,
+				requestBase: urls.requestBase
 			}
 		},
 		computed: {
@@ -170,7 +172,7 @@ export default {
 				}
 			},
 			add: function() {
-				Vue.http.post("http://localhost:8080/Lyrics/api/song", this.gatherData()).then(
+				Vue.http.post(this.requestBase + '/song', this.gatherData()).then(
 					() => {
 						this.success = true;
 						this.failure = false;
@@ -182,21 +184,21 @@ export default {
 				);
 			},
 			getPerformers: function() {
-				Vue.http.get("http://localhost:8080/Lyrics/api/performer").then(
+				Vue.http.get(this.requestBase + '/performer').then(
 					response => {
 						this.performers = response.body;
 					}
 				);
 			},
 			getAlbums: function() {
-				Vue.http.get("http://localhost:8080/Lyrics/api/album").then(
+				Vue.http.get(this.requestBase + '/album').then(
 					response => {
 						this.albums = response.body;
 					}
 				);
 			},
 			getAuthors: function() {
-				Vue.http.get("http://localhost:8080/Lyrics/api/author").then(
+				Vue.http.get(this.requestBase + '/author').then(
 					response => {
 						this.authors = response.body;
 					}
@@ -248,9 +250,9 @@ export default {
 			editAndApprove: function() {
 				var updated = this.gatherData();
 				updated.id = this.songToBeApproved.id;
-				Vue.http.put("http://localhost:8080/Lyrics/api/song", updated).then(
+				Vue.http.put(this.requestBase + '/song', updated).then(
 					() => {
-						Vue.http.post("http://localhost:8080/Lyrics/api/approve/" + updated.id).then(
+						Vue.http.post(this.requestBase + '/approve/' + updated.id).then(
 							() => {
 								this.success = true;
 								this.failure = false;

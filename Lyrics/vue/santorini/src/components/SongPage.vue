@@ -42,6 +42,7 @@
 <script>
 import Vue from 'vue'
 import comment from './Comment.vue'
+import urls from './../main.js'
 
 export default {
 		name: 'songPage',
@@ -54,7 +55,8 @@ export default {
 			return {
 				comments: [],
 				text: '',
-				failure: false
+				failure: false,
+				requestBase: urls.requestBase
 			}
 		},
 		computed: {
@@ -68,7 +70,7 @@ export default {
 		methods: {
 			getComments: function() {
 				var songId = {"id": this.song.id};
-				Vue.http.post("http://localhost:8080/Lyrics/api/comment", songId).then(
+				Vue.http.post(this.requestBase + '/comment', songId).then(
 					(response) => {
 						this.comments = response.body;
 					}
@@ -76,7 +78,7 @@ export default {
 			},
 			comment: function() {
 				var posting = {"text": this.text, "user": {"username": this.username}, "song": {"id": this.song.id}};
-				Vue.http.put("http://localhost:8080/Lyrics/api/comment", posting).then(
+				Vue.http.put(this.requestBase + '/comment', posting).then(
 					() => {
 						this.failure = false;
 						this.getComments();

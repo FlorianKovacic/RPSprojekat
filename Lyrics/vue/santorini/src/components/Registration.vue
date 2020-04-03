@@ -22,6 +22,7 @@
 <script>
 
 import Vue from 'vue'
+import urls from './../main.js'
 
 	export default {
 		name: 'registration',
@@ -31,12 +32,13 @@ import Vue from 'vue'
 				password: '',
 				emailAdress: '',
 				success: false,
-				failure: false
+				failure: false,
+				requestBase: urls.requestBase
 			}
 		},
 		methods: {
 			register: function() {
-				Vue.http.put("http://localhost:8080/Lyrics/api/register", {
+				Vue.http.put(this.requestBase + '/register', {
 					"username": this.username,
 					"password": this.password,
 					"emailAdress": this.emailAdress

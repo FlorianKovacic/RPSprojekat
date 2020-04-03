@@ -14,12 +14,14 @@
 <script>
 import Vue from 'vue'
 import songEntry from './SongEntry.vue'
+import urls from './../main.js'
 
 	export default {
 		name: 'songReview',
 		data: function() {
 			return {
-				pendingSongs: []
+				pendingSongs: [],
+				requestBase: urls.requestBase
 			}
 		},
 		components: {
@@ -27,7 +29,7 @@ import songEntry from './SongEntry.vue'
 		},
 		methods: {
 			getSongs: function() {
-				Vue.http.get("http://localhost:8080/Lyrics/api/pending").then(
+				Vue.http.get(this.requestBase + '/pending').then(
 					(response) => {
 						this.pendingSongs = response.body;
 					}
