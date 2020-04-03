@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<div v-if="loggedIn()">
-			<div v-if="songToBeApproved !== null && auth !== 'admin'">
+		<div v-if="loggedIn">
+			<div v-if="!submitting && !loggedInAsAdmin">
 				Access denied!
 			</div>
 			<div v-else>
 				<form v-on:submit.prevent="submit()">
-					<div class="form-group mb-5">
+					<div class="form-group mt-2 mb-5">
 						<fieldset class="border">
 							<div class="form-group mb-5">
 								<legend>General</legend>
@@ -90,17 +90,17 @@
 						</fieldset>
 					</div>
 					<div class="form-group mb-3">
-						<button class="btn-primary" type="submit">{{songToBeApproved === null ? 'Submit this song' : 'Approve of this song'}}</button>
+						<button class="btn-primary" type="submit">{{submitting ? 'Submit this song' : 'Approve of this song'}}</button>
 					</div>
 					<div class="form-group mb-3">
-						<button class="btn-danger" v-if="songToBeApproved !== null" type="button" v-on:click="revert()">Revert changes</button>
+						<button class="btn-danger" v-if="!submitting" type="button" v-on:click="revert()">Revert changes</button>
 					</div>
-					<div v-if="success" class="alert alert-success">{{songToBeApproved === null ? 'Song successfully submitted!' : 'Song approved of!'}}</div>
-					<div v-if="failure" class="alert alert-danger">{{songToBeApproved === null ? 'Unauthorized access! You need to log in to perform this action.' : 'Access denied!'}}</div>
+					<div v-if="success" class="alert alert-success">{{submitting ? 'Song successfully submitted!' : 'Song approved of!'}}</div>
+					<div v-if="failure" class="alert alert-danger">{{submitting ? 'Unauthorized access! You need to log in to perform this action.' : 'Access denied!'}}</div>
 				</form>
 			</div>
 		</div>
-		<div class="jumbotron" v-else>
+		<div class="jumbotron mt-2" v-else>
 			You need to log in to submit a song!
 		</div>
 	</div>
@@ -113,12 +113,6 @@ import selectableRow from './SelectableTableRow.vue'
 
 export default {
 		name: 'addSong',
-		props: {
-			'auth': {},
-			'songToBeApproved': {
-				default: null
-			}
-		},
 		components: {
 			selectableRow
 		},
@@ -127,9 +121,9 @@ export default {
 				title: '',
 				lyrics: '',
 				language: 'English',
-				performer: null,
+				performer: -1,
 				performers: [],
-				album: null,
+				album: -1,
 				albums: [],
 				selectedMusic: [],
 				selectedLyrics: [],
@@ -137,6 +131,23 @@ export default {
 				authors: [],
 				success: false,
 				failure: false
+			}
+		},
+		computed: {
+			loggedIn() {
+				return this.$store.getters.loggedIn;
+			},
+			loggedInAsAdmin() {
+				return this.$store.getters.loggedInAsAdmin;
+			},
+			username() {
+				return this.$store.state.username;
+			},
+			songToBeApproved() {
+				return this.$store.state.song;
+			},
+			submitting() {
+				return this.$route.name === 'submit';
 			}
 		},
 		methods: {
@@ -152,7 +163,7 @@ export default {
 						"id": this.album
 					},
 					"uploader": {
-						"username": this.$session.get('username')
+						"username": this.username
 					},
 					"musicBy": this.selectedMusic,
 					"lyricsBy": this.selectedLyrics
@@ -216,11 +227,7 @@ export default {
 							break;
 						}
 					}
-					if(index === -1) {
-						//console.log('Fatal error!');
-					} else {
-						array.splice(index, 1);
-					}
+					array.splice(index, 1);
 				}
 			},
 			removeSelected: function(id, array) {
@@ -228,9 +235,6 @@ export default {
 				var tbody = table.firstChild;
 				var rows = tbody.childNodes;
 				rows.forEach(row => this.removeIfSelected(row, array));
-			},
-			loggedIn: function() {
-				return this.auth !== 'none';
 			},
 			fillIn: function() {
 				this.title = this.songToBeApproved.title;
@@ -260,7 +264,7 @@ export default {
 					);
 			},
 			submit: function() {
-				if(this.songToBeApproved === null) {
+				if(this.submitting) {
 					this.add();
 				} else {
 					this.editAndApprove();
@@ -268,6 +272,22 @@ export default {
 			},
 			revert: function() {
 				this.fillIn();
+			},
+			clearFields: function() {
+				this.title = '';
+				this.lyrics = '';
+				this.language = 'English';
+				this.performer = -1;
+				this.album = -1;
+				this.selectedMusic = [];
+				this.selectedLyrics = [];
+			},
+			initializeFields: function() {
+				if(this.submitting) {
+					this.clearFields();
+				} else {
+					this.fillIn();
+				}
 			}
 		},
 		mounted: function() {
@@ -276,10 +296,13 @@ export default {
 			this.getAuthors();
 		},
 		created: function() {
-			if(this.songToBeApproved !== null) {
-				this.fillIn();
-			}
-		}
+			this.initializeFields();
+		},
+		beforeRouteEnter: function(to, from, next) {
+			next(vm => {
+				vm.initializeFields();
+			});
+		},
 	};
 </script>
 

@@ -34,9 +34,9 @@
 			<div v-if="results.length">
 				<div class="mb-3">Results:</div>
 				<ol class="list-group">
-					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action mb-2" v-on:click="toSong(song)">
-						<songElement v-bind:song="song" v-bind:full="false">
-						</songElement>
+					<li v-for="song in results" v-bind:key="song.id" class="list-group-item list-group-item-action container mb-2" v-on:click="toSong(song)">
+						<songEntry v-bind:song="song">
+						</songEntry>
 					</li>
 				</ol>
 			</div>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import songElement from './SongPage.vue'
+import songEntry from './SongEntry.vue'
 import Vue from 'vue'
 
 export default {
@@ -64,7 +64,7 @@ export default {
 		}
 	},
 	components: {
-		songElement
+		songEntry
 	},
 	methods: {
 		search: function() {
@@ -86,7 +86,8 @@ export default {
 			);
 		},
 		toSong: function(song) {
-			this.$emit('toSong', song);
+			this.$store.commit('setSong', song);
+			this.$router.push({name: 'song'});
 		}
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-	<div v-if="full">
+	<div>
 		<h1>{{song.title}}</h1>
 		<h4>By {{song.performer ? song.performer.name : 'unknown artist'}}</h4>
 		<div class="my-5">
@@ -37,9 +37,6 @@
 		</div>
 		<div class="mb-3" v-else>Be the first to leave a comment!</div>
 	</div>
-	<div v-else>
-		{{song.title + ' by ' + (song.performer ? song.performer.name : 'unknown artist')}}
-	</div>
 </template>
 
 <script>
@@ -47,8 +44,9 @@ import Vue from 'vue'
 import comment from './Comment.vue'
 
 export default {
-		name: 'songElement',
-		props: ['song', 'full'],
+		name: 'songPage',
+		props: {
+		},
 		components: {
 			comment
 		},
@@ -57,6 +55,14 @@ export default {
 				comments: [],
 				text: '',
 				failure: false
+			}
+		},
+		computed: {
+			username() {
+				return this.$store.state.username;
+			},
+			song() {
+				return this.$store.state.song;
 			}
 		},
 		methods: {
@@ -69,7 +75,7 @@ export default {
 				);
 			},
 			comment: function() {
-				var posting = {"text": this.text, "user": {"username": this.$session.get('username')}, "song": {"id": this.song.id}};
+				var posting = {"text": this.text, "user": {"username": this.username}, "song": {"id": this.song.id}};
 				Vue.http.put("http://localhost:8080/Lyrics/api/comment", posting).then(
 					() => {
 						this.failure = false;
@@ -82,9 +88,7 @@ export default {
 			}
 		},
 		mounted: function() {
-			if(this.full) {
-				this.getComments();
-			}
+			this.getComments();
 		}
 	};
 </script>

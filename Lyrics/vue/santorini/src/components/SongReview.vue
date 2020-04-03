@@ -2,8 +2,8 @@
 	<div class="my-5">
 		<div v-if="pendingSongs.length">
 			<ol class="list-group">
-				<li v-for="song in pendingSongs" v-bind:key="song.id" class="list-group-item list-group-item-action mb-2" v-on:click="toReview(song)">
-					<songElement v-bind:song="song" v-bind:full="false"></songElement>
+				<li v-for="song in pendingSongs" v-bind:key="song.id" class="list-group-item list-group-item-action container mb-2" v-on:click="toReview(song)">
+					<songEntry v-bind:song="song"></songEntry>
 				</li>
 			</ol>
 		</div>
@@ -13,7 +13,7 @@
 
 <script>
 import Vue from 'vue'
-import songElement from './SongPage.vue'
+import songEntry from './SongEntry.vue'
 
 	export default {
 		name: 'songReview',
@@ -23,7 +23,7 @@ import songElement from './SongPage.vue'
 			}
 		},
 		components: {
-			songElement
+			songEntry
 		},
 		methods: {
 			getSongs: function() {
@@ -34,7 +34,8 @@ import songElement from './SongPage.vue'
 				);
 			},
 			toReview: function(song) {
-				this.$emit('toReview', song);
+				this.$store.commit('setSong', song);
+				this.$router.push({name: 'reviewing'});
 			}
 		},
 		mounted: function() {

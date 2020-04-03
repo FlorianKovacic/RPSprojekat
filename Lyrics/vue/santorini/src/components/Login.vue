@@ -40,14 +40,13 @@ export default {
 			};
 			this.$http.post("http://localhost:8080/Lyrics/api/login", this.user).then(
 				response => {
-					this.$session.start();
-					var jwt = response.body;
-					this.$session.set('jwt', jwt);
-					this.$session.set('username', this.username);
-					var decodedJWT = VueJwtDecode.decode(jwt);
-					this.$session.set('admin', decodedJWT.admin);
-					Vue.http.headers.common['Authorization'] = 'Bearer' + response.body;
-					this.$emit('logIn');
+					const jwt = response.body;
+					this.$store.commit('setJWT', jwt);
+					this.$store.commit('setUsername', this.username);
+					const decodedJWT = VueJwtDecode.decode(jwt);
+					this.$store.commit('setAuth', decodedJWT.admin ? 'admin' : 'user');
+					Vue.http.headers.common['Authorization'] = 'Bearer' + jwt;
+					this.$router.push({name: 'home'});
 					this.success = true;
 					this.failure = false;
 				},

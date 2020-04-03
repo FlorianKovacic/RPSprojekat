@@ -1,15 +1,15 @@
 <template>
 	<div>
 		<div v-if="loggedIn">
-			<div>Logged in as: {{this.$session.get('username')}}</div>
-			<a href="#" v-on:click="logOut">[Log out]</a>
+			<div>Logged in as: {{username}}</div>
+			<router-link :to="{name: 'home'}" v-on:click.native="logOut()">[Log out]</router-link>
 		</div>
 		<div v-else>
 			<span>
-				<a href="#" v-on:click="toLogin">[Log in]</a>
+				<router-link :to="{name: 'login'}">[Log in]</router-link>
 			</span>
 			<span>
-				<a href="#" v-on:click="toRegistration">[Register]</a>
+				<router-link :to="{name: 'registration'}">[Register]</router-link>
 			</span>
 		</div>
 	</div>
@@ -17,22 +17,26 @@
 
 <script>
 
+import Vue from 'vue'
+
 	export default {
 		name: 'loggedIn',
-		props: ['loggedIn'],
 		data: function() {
 			return {
 			}
 		},
+		computed: {
+			username() {
+				return this.$store.state.username;
+			},
+			loggedIn() {
+				return this.$store.getters.loggedIn;
+			}
+		},
 		methods: {
-			toLogin: function() {
-				this.$emit('toLogin');
-			},
-			toRegistration: function() {
-				this.$emit('toRegistration');
-			},
 			logOut: function() {
-				this.$emit('logOut');
+				this.$store.commit('endSession');
+				Vue.http.headers.common['Authorization'] = null;
 			}
 		}
 	}
