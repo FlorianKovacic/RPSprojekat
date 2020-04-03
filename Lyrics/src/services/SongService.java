@@ -46,7 +46,12 @@ public class SongService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response getOne(@PathParam("id") int id) {
-		return Response.ok(sb.getById(id)).build();
+		Song requested = sb.getById(id);
+		if(requested != null) {
+			return Response.ok(requested).build();
+		} else {
+			return Response.status(404).build();
+		}
 	}
 
 	@PUT

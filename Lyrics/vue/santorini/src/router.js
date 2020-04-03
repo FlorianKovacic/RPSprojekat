@@ -7,8 +7,8 @@ const routes = [
 	{name: 'login', path: '/login', component: () => import('./components/Login.vue')},
 	{name: 'registration', path: '/registration', component: () => import('./components/Registration.vue')},
 	{name: 'review', path: '/review', component: () => import('./components/SongReview.vue')},
-	{name: 'reviewing', path: '/reviewing', component: () => import('./components/AddSong.vue')},
-	{name: 'song', path: '/song', component: () => import('./components/SongPage.vue')},
+	{name: 'reviewing', path: '/reviewing/:id', component: () => import('./components/AddSong.vue'), props: true},
+	{name: 'song', path: '/song/:id', component: () => import('./components/SongPage.vue'), props: true},
 ]
 
 const router = new VueRouter({

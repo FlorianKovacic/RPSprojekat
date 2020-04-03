@@ -36,8 +36,7 @@ import urls from './../main.js'
 				);
 			},
 			toReview: function(song) {
-				this.$store.commit('setSong', song);
-				this.$router.push({name: 'reviewing'});
+				this.$router.push({name: 'reviewing', params: {id: song.id}});
 			}
 		},
 		mounted: function() {

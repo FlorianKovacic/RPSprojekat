@@ -88,8 +88,7 @@ export default {
 			);
 		},
 		toSong: function(song) {
-			this.$store.commit('setSong', song);
-			this.$router.push({name: 'song'});
+			this.$router.push({name: 'song', params: {id: song.id}});
 		}
 	}
 }

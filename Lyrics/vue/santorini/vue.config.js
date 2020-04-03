@@ -1,5 +1,6 @@
-import urls from './src/main.js'
+//import urls from './src/main.js'
 
 module.exports = {
-	publicPath: urls.projectRoot
+	//publicPath: urls.projectRoot
+	publicPath: '/Lyrics'
 }

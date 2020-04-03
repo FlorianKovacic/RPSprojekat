@@ -162,4 +162,9 @@ public class Song implements Serializable {
 		setApproved(true);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("title: %s", title);
+	}
+	
 }

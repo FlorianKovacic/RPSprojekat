@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -38,7 +39,12 @@ public class SongBean {
 	}
 
 	public Song getById(int id) {
-		Song result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		Song result = null;
+		try {
+			result = em.createQuery("select distinct s from Song s left join fetch s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
+		} catch(NoResultException e) {
+			return null;
+		}
 		result = em.createQuery("select distinct s from Song s left join fetch s.lyricsBy where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
 		result = em.createQuery("select distinct s from Song s left join fetch s.comments where s.id = :id", Song.class).setParameter("id", id).getSingleResult();
 		return result;
@@ -135,12 +141,9 @@ public class SongBean {
 	}
 
 	public List<Song> searchQuery(String conditions, SearchCriteria criteria) {
-		String musicBy = "s.performer left join fetch s.album left join fetch s.uploader left join fetch s.musicBy";
-		String lyricsBy = "s.lyricsBy";
-		String comments = "s.comments";
-		List<Song> result = createQueryAndGetResultList(musicBy, conditions, criteria);
-		result = createQueryAndGetResultList(lyricsBy, conditions, criteria);
-		result = createQueryAndGetResultList(comments, conditions, criteria);
+		String performer = "s.performer";
+		List<Song> result = null;
+		result = createQueryAndGetResultList(performer, conditions, criteria);
 		return result;
 	}
 
@@ -152,7 +155,7 @@ public class SongBean {
 		if(!criteria.getAlbum().equals("")) {
 			conditions += " and s.album.title like :album";
 		}
-		if(criteria != null && criteria.getLanguage() != Language.Any) {
+		if(criteria.getLanguage() != Language.Any) {
 			conditions += " and s.language = :language";
 		}
 		return searchQuery(conditions, criteria);

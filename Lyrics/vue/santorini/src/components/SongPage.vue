@@ -1,41 +1,46 @@
 <template>
 	<div>
-		<h1>{{song.title}}</h1>
-		<h4>By {{song.performer ? song.performer.name : 'unknown artist'}}</h4>
-		<div class="my-5">
-			<p><pre>{{song.lyrics}}</pre></p>
-		</div>
-		<p v-if="song.album">From {{song.album.title}} - {{song.album.year}}</p>
-		<div class="mb-2">
-			<div>Music composed by:</div>
-			<p v-if="song.musicBy.length">{{song.musicBy.map((m) => m.name).toString()}}</p>
-			<div v-else>unknown</div>
-		</div>
-		<div class="mb-4">
-			<div>Lyrics written by:</div>
-			<p v-if="song.lyricsBy.length">{{song.lyricsBy.map((l) => l.name).toString()}}</p>
-			<div v-else>unknown</div>
-		</div>
-		<div>Uploaded by:</div>
-		<p>{{song.uploader.username}}</p>
-		<br/>
-		<div>
-			<div class="mb-3">
-				<textarea v-model="text" rows="3" cols="60" placeholder="Write a comment..."></textarea>
+		<div v-if="songFound">
+			<h1>{{song.title}}</h1>
+			<h4>By {{song.performer ? song.performer.name : 'unknown artist'}}</h4>
+			<div class="my-5">
+				<p><pre>{{song.lyrics}}</pre></p>
 			</div>
-			<div class="mb-3">
-				<button type="button" v-on:click="comment()">Post</button>
+			<p v-if="song.album">From {{song.album.title}} - {{song.album.year}}</p>
+			<div class="mb-2">
+				<div>Music composed by:</div>
+				<p v-if="song.musicBy.length">{{song.musicBy.map((m) => m.name).toString()}}</p>
+				<div v-else>unknown</div>
 			</div>
-			<div class="alert alert-danger" v-if="failure">You have to log in to leave a comment!</div>
+			<div class="mb-4">
+				<div>Lyrics written by:</div>
+				<p v-if="song.lyricsBy.length">{{song.lyricsBy.map((l) => l.name).toString()}}</p>
+				<div v-else>unknown</div>
+			</div>
+			<div>Uploaded by:</div>
+			<p>{{song.uploader.username}}</p>
+			<br/>
+			<div>
+				<div class="mb-3">
+					<textarea v-model="text" rows="3" cols="60" placeholder="Write a comment..."></textarea>
+				</div>
+				<div class="mb-3">
+					<button type="button" v-on:click="comment()">Post</button>
+				</div>
+				<div class="alert alert-danger" v-if="failure">You have to log in to leave a comment!</div>
+			</div>
+			<div v-if="comments.length">
+				<ul class="list-group">
+					<li v-for="comment in comments" v-bind:key="comment.id" class="list-group-item mb-4 container rounded">
+						<comment v-bind:comment="comment"></comment>
+					</li>
+				</ul>
+			</div>
+			<div class="mb-3" v-else>Be the first to leave a comment!</div>
 		</div>
-		<div v-if="comments.length">
-			<ul class="list-group">
-				<li v-for="comment in comments" v-bind:key="comment.id" class="list-group-item mb-4 container rounded">
-					<comment v-bind:comment="comment"></comment>
-				</li>
-			</ul>
+		<div v-else>
+			<h1>Not found</h1>
 		</div>
-		<div class="mb-3" v-else>Be the first to leave a comment!</div>
 	</div>
 </template>
 
@@ -46,25 +51,23 @@ import urls from './../main.js'
 
 export default {
 		name: 'songPage',
-		props: {
-		},
+		props: ['id'],
 		components: {
 			comment
 		},
 		data: function() {
 			return {
+				song: null,
 				comments: [],
 				text: '',
 				failure: false,
-				requestBase: urls.requestBase
+				requestBase: urls.requestBase,
+				songFound: false
 			}
 		},
 		computed: {
 			username() {
 				return this.$store.state.username;
-			},
-			song() {
-				return this.$store.state.song;
 			}
 		},
 		methods: {
@@ -87,10 +90,27 @@ export default {
 						this.failure = true;
 					}
 				)
+			},
+			getSong: function() {
+				Vue.http.get(this.requestBase + '/song/' + this.id).then(
+					(response) => {
+						this.song = response.body;
+						this.comments = this.song.comments;
+						this.songFound = true;
+					},
+					() => {
+						this.songFound = false;
+					}
+				);
 			}
 		},
 		mounted: function() {
-			this.getComments();
+			this.getSong();
+		},
+		watch: {
+			$route() {
+				this.getSong();
+			}
 		}
 	};
 </script>
