@@ -14,7 +14,7 @@
 <script>
 import Vue from 'vue'
 import songEntry from './SongEntry.vue'
-import urls from './../main.js'
+import urls from './../urls.js'
 
 	export default {
 		name: 'songReview',

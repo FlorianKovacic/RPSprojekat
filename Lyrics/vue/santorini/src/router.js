@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router'
+import urls from './urls.js'
 
 const routes = [
 	{name: 'home', path: '/', component: () => import('./components/Home.vue')},
@@ -12,7 +13,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-	base: '/Lyrics',
+	base: urls.projectRoot,
 	mode: 'history',
 	routes: routes
 })

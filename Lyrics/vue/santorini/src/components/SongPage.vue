@@ -47,7 +47,7 @@
 <script>
 import Vue from 'vue'
 import comment from './Comment.vue'
-import urls from './../main.js'
+import urls from './../urls.js'
 
 export default {
 		name: 'songPage',

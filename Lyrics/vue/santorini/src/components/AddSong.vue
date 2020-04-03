@@ -115,7 +115,7 @@
 
 import Vue from 'vue'
 import selectableRow from './SelectableTableRow.vue'
-import urls from './../main.js'
+import urls from './../urls.js'
 
 export default {
 		name: 'addSong',
@@ -297,8 +297,10 @@ export default {
 				Vue.http.get(this.requestBase + '/song/' + this.id).then(
 					(response) => {
 						this.songToBeApproved = response.body;
-						this.songFound = true;
-						this.fillIn();
+						if(!this.songToBeApproved.approved){
+							this.songFound = true;
+							this.fillIn();
+						}
 					},
 					() => {
 						this.songFound = false;

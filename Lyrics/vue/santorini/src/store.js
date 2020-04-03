@@ -7,8 +7,7 @@ const store = new Vuex.Store({
 	state: {
 		jwt: '',
 		auth: 'none',
-		username: '',
-		song: null
+		username: ''
 	},
 	getters: {
 		loggedIn: state => {
@@ -32,9 +31,6 @@ const store = new Vuex.Store({
 			state.jwt = '';
 			state.auth = 'none';
 			state.username = '';
-		},
-		setSong(state, newSong) {
-			state.song = newSong;
 		}
 	}
 })

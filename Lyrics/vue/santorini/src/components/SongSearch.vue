@@ -48,7 +48,7 @@
 <script>
 import songEntry from './SongEntry.vue'
 import Vue from 'vue'
-import urls from './../main.js'
+import urls from './../urls.js'
 
 export default {
 	name: 'songSearch',
