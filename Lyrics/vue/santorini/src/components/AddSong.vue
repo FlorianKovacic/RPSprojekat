@@ -300,6 +300,8 @@ export default {
 						if(!this.songToBeApproved.approved){
 							this.songFound = true;
 							this.fillIn();
+						} else {
+							this.songFound = false;
 						}
 					},
 					() => {

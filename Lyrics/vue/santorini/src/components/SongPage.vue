@@ -95,8 +95,12 @@ export default {
 				Vue.http.get(this.requestBase + '/song/' + this.id).then(
 					(response) => {
 						this.song = response.body;
-						this.comments = this.song.comments;
-						this.songFound = true;
+						if(this.song.approved) {
+							this.comments = this.song.comments;
+							this.songFound = true;
+						} else {
+							this.songFound = false;
+						}
 					},
 					() => {
 						this.songFound = false;

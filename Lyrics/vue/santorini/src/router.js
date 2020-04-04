@@ -10,6 +10,7 @@ const routes = [
 	{name: 'review', path: '/review', component: () => import('./components/SongReview.vue')},
 	{name: 'reviewing', path: '/reviewing/:id', component: () => import('./components/AddSong.vue'), props: true},
 	{name: 'song', path: '/song/:id', component: () => import('./components/SongPage.vue'), props: true},
+	{path: '*', component: () => import('./components/NotFoundComponent.vue')}
 ]
 
 const router = new VueRouter({
